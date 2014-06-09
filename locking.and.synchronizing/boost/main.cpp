@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <list>
 #include <boost/thread.hpp>
-#include <boost/thread/recursive_mutex.hpp>
+
 
 
 
@@ -48,16 +48,6 @@ critical_section::~critical_section() {
 	delete(this->_locked);
 }
 
-// void critical_section::init() {
-// 	pthread_mutexattr_t a;
-// 	pthread_mutexattr_init(&a);
-// 	pthread_mutexattr_settype(&a, PTHREAD_MUTEX_RECURSIVE);
-// 	pthread_mutex_init(&_mutex, &a);
-// }
-
-// void critical_section::destroy() {
-// 	pthread_mutex_destroy(&_mutex);
-// }
 
 
 
@@ -184,10 +174,8 @@ void task_manager::wait() {
 ///////////////////////////////////////////////////////////////////////////////
 
 int main(int argc, char* argv[]) {
-	// critical_section::init();
 	task_manager::begin();
 	task_manager::wait();
-	// critical_section::destroy();
 	printf("--- end ---\n");
 	return 0;
 }
