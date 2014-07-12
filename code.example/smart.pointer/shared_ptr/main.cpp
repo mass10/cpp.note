@@ -152,13 +152,13 @@ private:
 
 	static EggList incubate() {
 		ScopeMarker marker("incubate()");
-		EggList result;
-		while(result.size() < 3) {
-			PEGG e(new Egg(result.size()));
-			result.push_back(e); //e は複製されている
+		EggList samples;
+		while(samples.size() < 3) {
+			PEGG e(new Egg(samples.size()));
+			samples.push_back(e); //e は複製されている
 		}
 		//複製を返す
-		return result;
+		return samples;
 	}
 };
 
