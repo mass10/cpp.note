@@ -51,6 +51,10 @@ public:
 
 private:
 
+	ScopeMarker(const ScopeMarker&);
+
+	ScopeMarker& operator = (const ScopeMarker&);
+
 	std::string _signature;
 };
 
