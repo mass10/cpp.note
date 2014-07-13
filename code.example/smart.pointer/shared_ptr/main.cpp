@@ -73,7 +73,7 @@ public:
 	Egg(int id) {
 		_buffer = (char*)malloc(30);
 		sprintf(_buffer, "id:%d", id);
-		printf("<Egg::Egg()> [新しいインスタンスのアドレス:%016x] (%s)\n", this, _buffer);
+		printf("<Egg::Egg()> [新しいインスタンスのアドレス:0x%016x] (%s)\n", this, _buffer);
 	}
 
 	const char* value() const {
@@ -81,7 +81,7 @@ public:
 	}
 
 	~Egg() {
-		printf("<Egg::~Egg()> [解放されるインスタンスのアドレス:%016x] (%s)\n", this, __SAFE__(_buffer));
+		printf("<Egg::~Egg()> [解放されるインスタンスのアドレス:0x%016x] (%s)\n", this, __SAFE__(_buffer));
 		_clear();
 	}
 
@@ -138,7 +138,7 @@ private:
 		ScopeMarker marker("diagnose0()");
 		for(EggList::const_iterator i = list.begin(); i != list.end(); i++) {
 			Egg& e = **i; //ここで const とれちゃうのおかしい... こういうもんだっけ...？
-			printf("[オブジェクトのアドレス:0x%016x]=(%s)\n", &e, e.value());
+			printf("<diagnose0()> [オブジェクトのアドレス:0x%016x] (%s)\n", &e, e.value());
 		}
 	}
 
@@ -146,7 +146,7 @@ private:
 		ScopeMarker marker("diagnose1()");
 		for(EggList::const_iterator i = list.begin(); i != list.end(); i++) {
 			Egg& e = **i;
-			printf("[オブジェクトのアドレス:0x%016x]=(%s)\n", &e, e.value());
+			printf("<diagnose1()> [オブジェクトのアドレス:0x%016x] (%s)\n", &e, e.value());
 		}
 	}
 
