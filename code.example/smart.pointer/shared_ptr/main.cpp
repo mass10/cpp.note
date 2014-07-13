@@ -137,13 +137,13 @@ private:
 	static void diagnose0(const EggList& list) {
 		ScopeMarker marker("diagnose0()");
 		for(EggList::const_iterator i = list.begin(); i != list.end(); i++) {
-			Egg& e = **i;
+			Egg& e = **i; //ここで const とれちゃうのおかしい... こういうもんだっけ...？
 			printf("[オブジェクトのアドレス:0x%016x]=(%s)\n", &e, e.value());
 		}
 	}
 
 	static void diagnose1(EggList list) {
-		ScopeMarker marker("incubate1()");
+		ScopeMarker marker("diagnose1()");
 		for(EggList::const_iterator i = list.begin(); i != list.end(); i++) {
 			Egg& e = **i;
 			printf("[オブジェクトのアドレス:0x%016x]=(%s)\n", &e, e.value());
