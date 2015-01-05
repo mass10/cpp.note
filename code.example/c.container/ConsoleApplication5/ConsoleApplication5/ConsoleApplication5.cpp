@@ -1,4 +1,4 @@
-// ConsoleApplication5.cpp : Defines the entry point for the console application.
+﻿// ConsoleApplication5.cpp : Defines the entry point for the console application.
 //
 
 #include "stdafx.h"
@@ -20,10 +20,11 @@ int _tmain(int argc, _TCHAR* argv[])
 		sprintf(id, "{id: %d}", i);
 		sprintf(name, "%d", rand());
 		list = a_append_list(list, id, name);
-		printf("�A�h���X [%016X]\n", list);
+		printf("アドレス [%016X]\n", list);
 	}
 
-	a_list_clear(list);
+	//BOM をつけたらコメント中の日本語についても何も言われなくなった...
+	//a_list_clear(list);
 
 	return 0;
 }
