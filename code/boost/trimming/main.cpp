@@ -6,6 +6,7 @@
 
 // static const char* __safe(const char* p) { return p == NULL ? "" : p; }
 
+
 void logger::info(const char* message) {
 
 	std::string s = message;

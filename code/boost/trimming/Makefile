@@ -1,6 +1,6 @@
 ### Makefile
 
-XTENT=~
+XTENT=.~
 
 
 
@@ -19,7 +19,7 @@ ${XTENT}main.o: main.cpp main.h
 # clean
 # *****************************************************************************
 clean:
-	rm ${XTENT}*.o *.app
+	rm -f ${XTENT}*.o *.app
 
 
 
