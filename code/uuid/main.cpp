@@ -7,8 +7,26 @@
 #include <boost/uuid/uuid_generators.hpp>
 
 int main() {
+
+	// 生成
 	const boost::uuids::uuid id = boost::uuids::random_generator()();
-	std::string s = boost::lexical_cast<std::string>(id);
-	printf("[%s]\n", s.c_str());
+
+	// stream operator
+	{
+		std::stringstream s;
+		s << id;
+		std::cout << "[" << s.str() << "]\n";
+	}
+
+	{
+		std::string s = boost::lexical_cast<std::string>(id);
+		printf("[%s]\n", s.c_str());
+	}
+
+	{
+		std::string s = to_string(id);
+		printf("[%s]\n", s.c_str());
+	}
+
 	return 0;
 }
