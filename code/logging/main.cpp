@@ -13,7 +13,9 @@
 
 int main()
 {
+	logger(std::wstringstream() << _T("### 開始 ###"));
 	return 0;
+	logger(std::wstringstream() << _T("--- 終了 ---"));
 }
 
 
