@@ -1,4 +1,20 @@
+#include <iostream>
+#include <fstream>
+#include <clocale>
+#include <Windows.h>
+#include <tchar.h>
+#include <string.h>
+#include <locale.h>
+#include <string>
+#include <sstream>
+#include <codecvt>
 
+
+
+int main()
+{
+	return 0;
+}
 
 
 
