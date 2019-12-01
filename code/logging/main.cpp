@@ -10,6 +10,7 @@
 #include <codecvt>
 
 
+class logger;
 
 int main()
 {
