@@ -26,29 +26,20 @@ mutex::~mutex() {
 	pthread_mutex_unlock(&__mutex);
 }
 
+void _footstep(const char* s) {
+	mutex mu;
+	std::cout << s << std::endl;
+}
+
 void* thread_func(void* param) {
-
-	{
-		mutex mu;
-		printf("[TRACE] <thread_func()> $$$ start $$$\n");
-	}
-
+	_footstep("[TRACE] <thread_func()> $$$ start $$$");
 	int* status = (int*)param;
 	*status = 1;
-
 	for (int i = 0; i < 10; i++) {
-		{
-			mutex mu;
-			printf("[TRACE] <thread_func()> .\n");
-		}
+		_footstep("[TRACE] <thread_func()> .");
 		usleep(10000);
 	}
-
-	{
-		mutex mu;
-		printf("[TRACE] <thread_func()> --- exit ---\n");
-	}
-
+	_footstep("[TRACE] <thread_func()> --- exit ---");
 	return NULL;
 }
 
@@ -56,11 +47,8 @@ int main(int argc, char* argv[]) {
 
 	pthread_mutex_init(&__mutex, NULL);
 
-	{
-		mutex mu;
-		printf("[TRACE] <main()> ### start ###\n");
-		printf("[TRACE] <main()> creating thread...\n");
-	}
+	_footstep("[TRACE] <main()> ### start ###");
+	_footstep("[TRACE] <main()> creating thread...");
 
 	// setlocale(LC_CTYPE, "ja_JP.UTF-8");
 
@@ -71,32 +59,20 @@ int main(int argc, char* argv[]) {
 	// pthread_attr_init(&attr);
 	int error = pthread_create(&thread_id, NULL, thread_func, (void*)&status);
 	if (error != 0) {
-		mutex mu;
-		printf("[ERROR] cannot create a new thread...\n");
+		_footstep("[ERROR] cannot create a new thread...");
 		return 0;
 	}
 
-	{
-		mutex mu;
-		printf("[TRACE] <main()> thread id: [%lu]\n", thread_id);
-	}
+	_footstep("[TRACE] <main()> thread is ready.");
 
 	// スレッドが起動するまで待機しています。
 	while (status == 0) {
-		{
-			mutex mu;
-			printf("[TRACE] <main()> .\n");
-		}
+		_footstep("[TRACE] <main()> .");
 		usleep(10);
 	}
 
 	// スレッドが終了するまで待機しています。
 	pthread_join(thread_id, NULL);
-
-	{
-		mutex mu;
-		printf("[TRACE] <main()> --- end ---\n");
-	}
-
+	_footstep("[TRACE] <main()> --- end ---");
 	return 0;
 }
