@@ -4,24 +4,31 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-// #include <wchar.h>
-// #include <locale.h>
-// #include <clocale>
-// #include <codecvt>
-// #include <process.h>
+#include <wchar.h>
+#include <locale.h>
+#include <clocale>
+#include <codecvt>
 
 
 
 
 ///////////////////////////////////////////////////////////////////////////////
 
-pthread_mutex_t __mutex;
 
 class mutex {
 public:
 	mutex();
 	~mutex();
+	static void initialize();
+private:
+	static pthread_mutex_t __mutex;
 };
+
+pthread_mutex_t mutex::__mutex;
+
+void mutex::initialize() {
+	pthread_mutex_init(&__mutex, NULL);
+}
 
 mutex::mutex() {
 	pthread_mutex_lock(&__mutex);	
@@ -31,10 +38,61 @@ mutex::~mutex() {
 	pthread_mutex_unlock(&__mutex);	
 }
 
-void _footstep(const char* s) {
+
+
+
+
+
+void _trace(const wchar_t* s)
+{
 	mutex mu;
-	std::cout << s << std::endl;
+
+	// to file
+	{
+		std::wofstream ofs("application.log", std::ios::app);
+		const auto enc = ofs.imbue({ {}, new std::codecvt_utf8<wchar_t, 0x10FFFF> });
+		ofs << L"[TRACE] " << s << std::endl;
+		ofs.close();
+	}
+
+	// stdout
+	{
+		const auto enc2 = std::wcout.imbue({ {}, new std::codecvt_utf8<wchar_t, 0x10FFFF> });
+		std::wcout << L"[TRACE] " << s << std::endl;
+	}
 }
+
+void _trace(const std::wstring& s)
+{
+	_trace(s.c_str());
+}
+
+void _trace(const std::wstringstream& s)
+{
+	_trace(s.str());
+}
+
+void _error(const wchar_t* s)
+{
+	mutex mu;
+
+	// to file
+	{
+		std::wofstream ofs("application.log", std::ios::app);
+		const auto enc = ofs.imbue({ {}, new std::codecvt_utf8<wchar_t, 0x10FFFF> });
+		ofs << L"[ERROR] " << s << std::endl;
+		ofs.close();
+	}
+
+	// stdout
+	{
+		const auto enc2 = std::wcout.imbue({ {}, new std::codecvt_utf8<wchar_t, 0x10FFFF> });
+		std::wcout << L"[ERROR] " << s << std::endl;
+	}
+}
+
+
+
 
 
 
@@ -105,7 +163,7 @@ void thread_core::wait() {
 
 	pthread_t thread_id = this->get_thread_id();
 	if (thread_id == 0) return;
-	_footstep("[TRACE] <thread_core::wait()> スレッドが終わるのを待っています...");
+	_trace(L"[TRACE] <thread_core::wait()> スレッドが終わるのを待っています...");
 	pthread_join(thread_id, NULL);
 	while (this->get_status() != thread_state::exit) {
 		usleep(10);
@@ -115,23 +173,23 @@ void thread_core::wait() {
 
 void thread_core::main() {
 
-	_footstep("[TRACE] <thread_core::main()> $$$ begin $$$");
+	_trace(L"[TRACE] <thread_core::main()> $$$ begin $$$");
 	this->_thread_id = pthread_self();
 	this->set_state(thread_state::up);
 	for (int i = 0; i < 10; i++) {
-		_footstep("[TRACE] <thread_core::main()> (.)");
+		_trace(L"[TRACE] <thread_core::main()> (.)");
 		usleep(100000);
 	}
-	_footstep("[TRACE] <thread_core::main()> --- end ---");
+	_trace(L"[TRACE] <thread_core::main()> --- end ---");
 	this->set_state(thread_state::exit);
 }
 
 void* thread_core::thread_func(void* param) {
 
-	_footstep("[TRACE] <thread_core::thread_func()> thread started!");
+	_trace(L"[TRACE] <thread_core::thread_func()> thread started!");
 	thread_core* t = (thread_core*)param;
 	t->main();
-	_footstep("[TRACE] <thread_core::thread_func()> thread exit.");
+	_trace(L"[TRACE] <thread_core::thread_func()> thread exit.");
 	// pthread_exit(NULL);
 	return NULL;
 }
@@ -141,15 +199,15 @@ void thread_core::run() {
 	pthread_t thread_id = 0;
 	// pthread_attr_t attr;
 	// pthread_attr_init(&attr);
-	_footstep("[TRACE] <thread_core::run()> creating thread...");
+	_trace(L"[TRACE] <thread_core::run()> creating thread...");
 	int error = pthread_create(&thread_id, NULL, thread_core::thread_func, (void*)this);
 	if (error != 0) {
-		_footstep("[ERROR] <thread_core::run()> cannot create a new thread...");
+		_trace(L"[ERROR] <thread_core::run()> cannot create a new thread...");
 		return;
 	}
-	_footstep("[TRACE] <thread_core::run()> (waiting for thread up...)");
+	_trace(L"[TRACE] <thread_core::run()> (waiting for thread up...)");
 	while (this->get_status() == thread_state::ready) {
-		_footstep("[TRACE] <thread_core::run()> .");
+		_trace(L"[TRACE] <thread_core::run()> .");
 		usleep(100);
 	}
 }
@@ -157,14 +215,28 @@ void thread_core::run() {
 ///////////////////////////////////////////////////////////////////////////////
 
 class application {
-public:
+private:
 	application();
 	~application();
+	static application _instance;
+public:
+	static void startup();
+	static application& get_instance();
 	void run();
 };
 
+application application::_instance;
+
 application::application() {
 
+}
+
+void application::startup() {
+
+}
+
+application& application::get_instance() {
+	return _instance;
 }
 
 application::~application() {
@@ -173,7 +245,7 @@ application::~application() {
 
 void application::run() {
 
-	_footstep("### start ###");
+	_trace(L"### start ###");
 
 	thread_core t1;
 	thread_core t2;
@@ -187,19 +259,19 @@ void application::run() {
 	t2.wait();
 	t3.wait();
 
-	_footstep("--- end ---");
+	_trace(L"--- end ---");
 }
-
-///////////////////////////////////////////////////////////////////////////////
 
 int main(int argc, char* argv[]) {
 
+	// ロケール設定
 	// setlocale(LC_CTYPE, "ja_JP.UTF-8");
-
-	pthread_mutex_init(&__mutex, NULL);
-
-	application app;
-	app.run();
-
+	setlocale(LC_CTYPE, "");
+	// ミューテックスの初期化
+	mutex::initialize();
+	// アプリケーション実行
+	application::get_instance().startup();
+	application::get_instance().run();
+	// 終了
 	return 0;
 }
