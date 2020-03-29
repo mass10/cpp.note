@@ -66,6 +66,21 @@ void _trace(const std::wstringstream& s)
 	_trace(s.str());
 }
 
+void _error(const wchar_t* s)
+{
+	mutex mu;
+	{
+		std::wofstream ofs("application.log", std::ios::app);
+		const auto enc = ofs.imbue({ {}, new std::codecvt_utf8<wchar_t, 0x10FFFF> });
+		ofs << L" [ERROR] " << s << std::endl;
+		ofs.close();
+	}
+	{
+		const auto enc2 = std::wcout.imbue({ {}, new std::codecvt_utf8<wchar_t, 0x10FFFF> });
+		std::wcout << L" [ERROR] " << s << std::endl;
+	}
+}
+
 void* thread_func(void* param) {
 	_trace(L"<thread_func()> $$$ start $$$");
 	int* status = (int*)param;
@@ -113,7 +128,7 @@ int main(int argc, char* argv[]) {
 	volatile int status = 0;
 	int error = pthread_create(&thread_id, NULL, thread_func, (void*)&status);
 	if (error != 0) {
-		_trace(L"[ERROR] スレッドを作成できませんでした...");
+		_error(L"スレッドを作成できませんでした...");
 		return 0;
 	}
 	while (status == 0) {
