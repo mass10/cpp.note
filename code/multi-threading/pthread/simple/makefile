@@ -1,2 +1,2 @@
-main: main.cpp
-	g++ main.cpp -o main -lpthread
+main: main.cpp makefile
+	g++ main.cpp -o main -lpthread -Wall
