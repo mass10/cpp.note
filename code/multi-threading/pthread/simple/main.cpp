@@ -136,7 +136,6 @@ int main(int argc, char* argv[]) {
 		usleep(10);
 	}
 
-	// スレッドが終了するまで待機しています。
 	_trace(L"<main()> スレッドが終了するのを待っています...");
 	pthread_join(thread_id, NULL);
 
