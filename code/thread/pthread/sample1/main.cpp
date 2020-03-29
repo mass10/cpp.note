@@ -62,10 +62,10 @@ private:
 	static void* thread_func(void* param);
 	void close();
 	int _thread_handle;
-	int _thread_id;
+	pthread_t _thread_id = 0;
 	void set_state(thread_state state);
 	thread_state get_status();
-	unsigned int get_thread_id();
+	pthread_t get_thread_id();
 	volatile thread_state _state;
 };
 
@@ -96,18 +96,17 @@ void thread_core::close() {
 
 }
 
-unsigned int thread_core::get_thread_id() {
+pthread_t thread_core::get_thread_id() {
 	mutex mu;
 	return this->_thread_id;
 }
 
 void thread_core::wait() {
 
-	const unsigned thread_id = this->get_thread_id();
+	pthread_t thread_id = this->get_thread_id();
 	if (thread_id == 0) return;
 	_footstep("[TRACE] <thread_core::wait()> スレッドが終わるのを待っています...");
-	// ★★★ Segmentation fault!!! ★★★
-	// pthread_join(thread_id, NULL);
+	pthread_join(thread_id, NULL);
 	while (this->get_status() != thread_state::exit) {
 		usleep(10);
 	}
@@ -123,7 +122,6 @@ void thread_core::main() {
 		_footstep("[TRACE] <thread_core::main()> (.)");
 		usleep(100000);
 	}
-	// sleep(5);
 	_footstep("[TRACE] <thread_core::main()> --- end ---");
 	this->set_state(thread_state::exit);
 }
@@ -134,7 +132,7 @@ void* thread_core::thread_func(void* param) {
 	thread_core* t = (thread_core*)param;
 	t->main();
 	_footstep("[TRACE] <thread_core::thread_func()> thread exit.");
-	pthread_exit(NULL);
+	// pthread_exit(NULL);
 	return NULL;
 }
 
