@@ -12,15 +12,17 @@
 
 
 
-///////////////////////////////////////////////////////////////////////////////
-
-
+// ミューテックスの定義
 class mutex {
 public:
+	// コンストラクター
 	mutex();
+	// デストラクター
 	~mutex();
+	// ミューテックスを初期化します。
 	static void initialize();
 private:
+	// ミューテックスオブジェクト
 	static pthread_mutex_t __mutex;
 };
 
@@ -111,26 +113,34 @@ enum class thread_state {
 
 class thread_core {
 public:
-	thread_core();
+	// コンストラクター
+	thread_core(std::wstring name);
+	// デストラクター
 	~thread_core();
+	// タスクの実行
 	void run();
-	void main();
+	// タスクの終了を待機
 	void wait();
 private:
+	// タスクのメイン処理
+	void main();
+	// スレッド関数
 	static void* thread_func(void* param);
-	void close();
+	// 
 	int _thread_handle;
 	pthread_t _thread_id = 0;
 	void set_state(thread_state state);
 	thread_state get_status();
 	pthread_t get_thread_id();
 	volatile thread_state _state;
+	std::wstring _name;
 };
 
-thread_core::thread_core() {
+thread_core::thread_core(std::wstring name) {
 
 	this->_thread_id = 0;
 	this->_state = thread_state::ready;
+	this->_name = name;
 }
 
 thread_core::~thread_core() {
@@ -150,10 +160,6 @@ thread_state thread_core::get_status() {
 	return this->_state;
 }
 
-void thread_core::close() {
-
-}
-
 pthread_t thread_core::get_thread_id() {
 	mutex mu;
 	return this->_thread_id;
@@ -163,7 +169,7 @@ void thread_core::wait() {
 
 	pthread_t thread_id = this->get_thread_id();
 	if (thread_id == 0) return;
-	_trace(L"[TRACE] <thread_core::wait()> スレッドが終わるのを待っています...");
+	_trace(L"<thread_core::wait()> スレッドが終わるのを待っています...");
 	pthread_join(thread_id, NULL);
 	while (this->get_status() != thread_state::exit) {
 		usleep(10);
@@ -173,41 +179,46 @@ void thread_core::wait() {
 
 void thread_core::main() {
 
-	_trace(L"[TRACE] <thread_core::main()> $$$ begin $$$");
+	_trace(L"<thread_core::main()> $$$ begin $$$");
+	// このスレッドの名前
+	const std::wstring thread_name = this->_name;
+	// このスレッドの ID
 	this->_thread_id = pthread_self();
+	// ステータスを更新します。
 	this->set_state(thread_state::up);
 	for (int i = 0; i < 10; i++) {
-		_trace(L"[TRACE] <thread_core::main()> (.)");
+		std::wstringstream s;
+		s << L"<thread_core::main()> (スレッド: " << thread_name << L")";
+		_trace(s);
 		usleep(100000);
 	}
-	_trace(L"[TRACE] <thread_core::main()> --- end ---");
+	_trace(L"<thread_core::main()> --- end ---");
+	// ステータスを更新します。
 	this->set_state(thread_state::exit);
 }
 
 void* thread_core::thread_func(void* param) {
 
-	_trace(L"[TRACE] <thread_core::thread_func()> thread started!");
 	thread_core* t = (thread_core*)param;
 	t->main();
-	_trace(L"[TRACE] <thread_core::thread_func()> thread exit.");
-	// pthread_exit(NULL);
 	return NULL;
 }
 
 void thread_core::run() {
 
+	// このスレッドの名前
+	const std::wstring thread_name = this->_name;
 	pthread_t thread_id = 0;
-	// pthread_attr_t attr;
-	// pthread_attr_init(&attr);
-	_trace(L"[TRACE] <thread_core::run()> creating thread...");
+	_trace(L"<thread_core::run()> スレッドを作成しています...");
 	int error = pthread_create(&thread_id, NULL, thread_core::thread_func, (void*)this);
 	if (error != 0) {
-		_trace(L"[ERROR] <thread_core::run()> cannot create a new thread...");
+		_error(L"<thread_core::run()> スレッドを作成できません...");
 		return;
 	}
-	_trace(L"[TRACE] <thread_core::run()> (waiting for thread up...)");
 	while (this->get_status() == thread_state::ready) {
-		_trace(L"[TRACE] <thread_core::run()> .");
+		std::wstringstream s;
+		s << L"<thread_core::run()> (スレッドが立ち上がるのを待っています... " << thread_name << L")";
+		_trace(s);
 		usleep(100);
 	}
 }
@@ -225,31 +236,37 @@ public:
 	void run();
 };
 
+// アプリケーションのインスタンス
 application application::_instance;
 
+// コンストラクター
 application::application() {
 
 }
 
+// アプリケーション開始前の特別な初期化
 void application::startup() {
 
 }
 
+// アプリケーションのインスタンスを返します。
 application& application::get_instance() {
 	return _instance;
 }
 
+// デストラクター
 application::~application() {
 
 }
 
+// アプリケーションのメイン処理
 void application::run() {
 
 	_trace(L"### start ###");
 
-	thread_core t1;
-	thread_core t2;
-	thread_core t3;
+	thread_core t1(L"t1");
+	thread_core t2(L"t2");
+	thread_core t3(L"t3");
 
 	t1.run();
 	t2.run();
@@ -262,16 +279,20 @@ void application::run() {
 	_trace(L"--- end ---");
 }
 
+// エントリーポイント
 int main(int argc, char* argv[]) {
 
 	// ロケール設定
 	// setlocale(LC_CTYPE, "ja_JP.UTF-8");
 	setlocale(LC_CTYPE, "");
+
 	// ミューテックスの初期化
 	mutex::initialize();
+
 	// アプリケーション実行
 	application::get_instance().startup();
 	application::get_instance().run();
+
 	// 終了
 	return 0;
 }
