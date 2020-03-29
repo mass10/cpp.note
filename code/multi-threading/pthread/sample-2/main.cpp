@@ -1,13 +1,40 @@
 #include <unistd.h>
 #include <stdio.h>
+// #include <stdlib.h>
 #include <pthread.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <wchar.h>
 #include <locale.h>
+// #include <time.h>
+#include <sys/time.h>
 #include <clocale>
 #include <codecvt>
+
+
+
+
+
+
+
+
+std::wstring get_current_timestamp() {
+	struct timeval v;
+	gettimeofday(&v, NULL);
+	const struct tm* time = localtime(&v.tv_sec);
+	wchar_t buffer[100];
+	swprintf(buffer, 20, L"%04d-%02d-%02d %02d:%02d:%02d",
+		time->tm_year + 1900, time->tm_mon + 1, time->tm_mday, time->tm_hour, time->tm_min, time->tm_sec);
+	swprintf(buffer + 19, 5, L".%03d", (uint16_t)(v.tv_usec / 1000));
+	return buffer;
+}
+
+
+
+
+
+
 
 
 
@@ -48,19 +75,22 @@ mutex::~mutex() {
 void _trace(const wchar_t* s)
 {
 	mutex mu;
-
+	const std::wstring timestamp = get_current_timestamp();
+	// threada id
+	pthread_t thread_id = pthread_self();
+	wchar_t buffer[99] = L"";
+	swprintf(buffer, 20, L"0x%08X", thread_id);
 	// to file
 	{
 		std::wofstream ofs("application.log", std::ios::app);
 		const auto enc = ofs.imbue({ {}, new std::codecvt_utf8<wchar_t, 0x10FFFF> });
-		ofs << L"[TRACE] " << s << std::endl;
+		ofs << timestamp << L" (" << buffer << L") [TRACE] " << s << std::endl;
 		ofs.close();
 	}
-
 	// stdout
 	{
 		const auto enc2 = std::wcout.imbue({ {}, new std::codecvt_utf8<wchar_t, 0x10FFFF> });
-		std::wcout << L"[TRACE] " << s << std::endl;
+		std::wcout << timestamp << L" (" << buffer << L") [TRACE] " << s << std::endl;
 	}
 }
 
@@ -77,19 +107,22 @@ void _trace(const std::wstringstream& s)
 void _error(const wchar_t* s)
 {
 	mutex mu;
-
+	const std::wstring timestamp = get_current_timestamp();
+	// threada id
+	pthread_t thread_id = pthread_self();
+	wchar_t buffer[99] = L"";
+	swprintf(buffer, 20, L"0x%08X", thread_id);
 	// to file
 	{
 		std::wofstream ofs("application.log", std::ios::app);
 		const auto enc = ofs.imbue({ {}, new std::codecvt_utf8<wchar_t, 0x10FFFF> });
-		ofs << L"[ERROR] " << s << std::endl;
+		ofs << timestamp << L" (" << buffer << L") [ERROR] " << s << std::endl;
 		ofs.close();
 	}
-
 	// stdout
 	{
 		const auto enc2 = std::wcout.imbue({ {}, new std::codecvt_utf8<wchar_t, 0x10FFFF> });
-		std::wcout << L"[ERROR] " << s << std::endl;
+		std::wcout << timestamp << L" (" << buffer << L") [ERROR] " << s << std::endl;
 	}
 }
 
@@ -167,7 +200,7 @@ pthread_t thread_core::get_thread_id() {
 
 void thread_core::wait() {
 
-	pthread_t thread_id = this->get_thread_id();
+	const pthread_t thread_id = this->get_thread_id();
 	if (thread_id == 0) return;
 	_trace(L"<thread_core::wait()> スレッドが終わるのを待っています...");
 	pthread_join(thread_id, NULL);
@@ -262,7 +295,7 @@ application::~application() {
 // アプリケーションのメイン処理
 void application::run() {
 
-	_trace(L"### start ###");
+	_trace(L"<application::run()> ### start ###");
 
 	thread_core t1(L"t1");
 	thread_core t2(L"t2");
@@ -276,7 +309,7 @@ void application::run() {
 	t2.wait();
 	t3.wait();
 
-	_trace(L"--- end ---");
+	_trace(L"<application::run()> --- end ---");
 }
 
 // エントリーポイント
@@ -285,14 +318,11 @@ int main(int argc, char* argv[]) {
 	// ロケール設定
 	// setlocale(LC_CTYPE, "ja_JP.UTF-8");
 	setlocale(LC_CTYPE, "");
-
 	// ミューテックスの初期化
 	mutex::initialize();
-
 	// アプリケーション実行
 	application::get_instance().startup();
 	application::get_instance().run();
-
 	// 終了
 	return 0;
 }
