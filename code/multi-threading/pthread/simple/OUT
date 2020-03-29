@@ -1,0 +1,20 @@
+ [TRACE] [TRACE] <main()> ### start ###
+ [TRACE] [TRACE] <main()> スレッドを起動しています...
+ [TRACE] [TRACE] <main()> Waiting for thread ready.
+ [TRACE] [TRACE] <main()> スレッドが起動するまで待機しています...
+ [TRACE] [TRACE] <thread_func()> $$$ start $$$
+ [TRACE] [TRACE] <thread_func()> Thread is ready.
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <main()> スレッドが起動するまで待機しています...
+ [TRACE] [TRACE] <main()> Waiting for thread exit.
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> --- exit ---
+ [TRACE] [TRACE] <main()> --- end ---
