@@ -10,20 +10,29 @@
 #include <codecvt>
 
 
-pthread_mutex_t __mutex;
+pthread_mutex_t _mutex;
 
 class mutex {
 public:
 	mutex();
 	~mutex();
+	static void init();
+private:
+	static pthread_mutex_t _mutex;
 };
 
+pthread_mutex_t mutex::_mutex;
+
 mutex::mutex() {
-	pthread_mutex_lock(&__mutex);
+	pthread_mutex_lock(&_mutex);
+}
+
+void mutex::init() {
+	pthread_mutex_init(&_mutex, NULL);
 }
 
 mutex::~mutex() {
-	pthread_mutex_unlock(&__mutex);
+	pthread_mutex_unlock(&_mutex);
 }
 
 void _footstep(const char* s) {
@@ -35,6 +44,7 @@ void* thread_func(void* param) {
 	_footstep("[TRACE] <thread_func()> $$$ start $$$");
 	int* status = (int*)param;
 	*status = 1;
+	_footstep("[TRACE] <thread_func()> Thread is ready.");
 	for (int i = 0; i < 10; i++) {
 		_footstep("[TRACE] <thread_func()> .");
 		usleep(10000);
@@ -45,14 +55,14 @@ void* thread_func(void* param) {
 
 int main(int argc, char* argv[]) {
 
-	pthread_mutex_init(&__mutex, NULL);
+	mutex::init();
 
 	_footstep("[TRACE] <main()> ### start ###");
-	_footstep("[TRACE] <main()> creating thread...");
 
 	// setlocale(LC_CTYPE, "ja_JP.UTF-8");
 
 	// スレッドを起動しています。
+	_footstep("[TRACE] <main()> creating thread...");
 	volatile int status = 0;
 	pthread_t thread_id = 0;
 	// pthread_attr_t attr;
@@ -62,8 +72,7 @@ int main(int argc, char* argv[]) {
 		_footstep("[ERROR] cannot create a new thread...");
 		return 0;
 	}
-
-	_footstep("[TRACE] <main()> thread is ready.");
+	_footstep("[TRACE] <main()> Waiting for thread ready.");
 
 	// スレッドが起動するまで待機しています。
 	while (status == 0) {
@@ -72,7 +81,9 @@ int main(int argc, char* argv[]) {
 	}
 
 	// スレッドが終了するまで待機しています。
+	_footstep("[TRACE] <main()> Waiting for thread exit.");
 	pthread_join(thread_id, NULL);
+
 	_footstep("[TRACE] <main()> --- end ---");
 	return 0;
 }
