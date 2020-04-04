@@ -1,4 +1,8 @@
-# cpp.note
+# Visual Studio でブレークポイントのかわりに(2020-03-31)
+
+```cpp
+__asm int 3
+```
 
 # メモリリーク検出 - Valgrind at Ubuntu 18.04 LTS (2020-04-04)
 
@@ -29,3 +33,4 @@ rm -fr /usr/local/include/valgrind
 find /usr/local/lib/valgrind/
 rm -fr /usr/local/lib/valgrind
 ```
+

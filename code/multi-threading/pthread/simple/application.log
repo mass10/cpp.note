@@ -1,0 +1,212 @@
+ [TRACE] [TRACE] <main()> ### start ###
+ [TRACE] [TRACE] <main()> creating thread...
+ [TRACE] [TRACE] <main()> Waiting for thread ready.
+ [TRACE] [TRACE] <thread_func()> $$$ start $$$
+ [TRACE] [TRACE] <thread_func()> Thread is ready.
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <main()> Waiting for thread exit.
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> --- exit ---
+ [TRACE] [TRACE] <main()> --- end ---
+ [TRACE] [TRACE] <main()> ### start ###
+ [TRACE] [TRACE] <main()> creating thread...
+ [TRACE] [TRACE] <main()> Waiting for thread ready.
+ [TRACE] [TRACE] <main()> スレッドが起動するまで待機しています...
+ [TRACE] [TRACE] <thread_func()> $$$ start $$$
+ [TRACE] [TRACE] <thread_func()> Thread is ready.
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <main()> スレッドが起動するまで待機しています...
+ [TRACE] [TRACE] <main()> Waiting for thread exit.
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> --- exit ---
+ [TRACE] [TRACE] <main()> --- end ---
+ [TRACE] [TRACE] <main()> ### start ###
+ [TRACE] [TRACE] <main()> creating thread...
+ [TRACE] [TRACE] <main()> Waiting for thread ready.
+ [TRACE] [TRACE] <main()> スレッドが起動するまで待機しています...
+ [TRACE] [TRACE] <thread_func()> $$$ start $$$
+ [TRACE] [TRACE] <thread_func()> Thread is ready.
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <main()> スレッドが起動するまで待機しています...
+ [TRACE] [TRACE] <main()> Waiting for thread exit.
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> --- exit ---
+ [TRACE] [TRACE] <main()> --- end ---
+ [TRACE] [TRACE] <main()> ### start ###
+ [TRACE] [TRACE] <main()> スレッドを起動しています...
+ [TRACE] [TRACE] <main()> Waiting for thread ready.
+ [TRACE] [TRACE] <main()> スレッドが起動するまで待機しています...
+ [TRACE] [TRACE] <thread_func()> $$$ start $$$
+ [TRACE] [TRACE] <thread_func()> Thread is ready.
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <main()> スレッドが起動するまで待機しています...
+ [TRACE] [TRACE] <main()> Waiting for thread exit.
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> --- exit ---
+ [TRACE] [TRACE] <main()> --- end ---
+ [TRACE] [TRACE] <main()> ### start ###
+ [TRACE] [TRACE] <main()> スレッドを起動しています...
+ [TRACE] [TRACE] <main()> Waiting for thread ready.
+ [TRACE] [TRACE] <main()> スレッドが起動するまで待機しています...
+ [TRACE] [TRACE] <thread_func()> $$$ start $$$
+ [TRACE] [TRACE] <thread_func()> Thread is ready.
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <main()> スレッドが起動するまで待機しています...
+ [TRACE] [TRACE] <main()> Waiting for thread exit.
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> --- exit ---
+ [TRACE] [TRACE] <main()> --- end ---
+ [TRACE] [TRACE] <main()> ### start ###
+ [TRACE] [TRACE] <main()> スレッドを起動しています...
+ [TRACE] [TRACE] <main()> スレッドが起動するまで待機しています...
+ [TRACE] [TRACE] <thread_func()> $$$ start $$$
+ [TRACE] [TRACE] <thread_func()> Thread is ready.
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <main()> スレッドが起動するまで待機しています...
+ [TRACE] [TRACE] <main()> スレッドが終了するのを待っています...
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> --- exit ---
+ [TRACE] [TRACE] <main()> --- end ---
+ [TRACE] [TRACE] <main()> ### start ###
+ [TRACE] [TRACE] <main()> スレッドを起動しています...
+ [TRACE] [TRACE] <main()> スレッドを起動しています...
+ [TRACE] [TRACE] <thread_func()> $$$ start $$$
+ [TRACE] [TRACE] <thread_func()> Thread is ready.
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <main()> スレッドを起動しています...
+ [TRACE] [TRACE] <main()> スレッドが終了するのを待っています...
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> .
+ [TRACE] [TRACE] <thread_func()> --- exit ---
+ [TRACE] [TRACE] <main()> --- end ---
+ [TRACE] <main()> ### start ###
+ [TRACE] <main()> スレッドを起動しています...
+ [TRACE] <main()> スレッドを起動しています...
+ [TRACE] <thread_func()> $$$ start $$$
+ [TRACE] <thread_func()> Thread is ready.
+ [TRACE] <thread_func()> .
+ [TRACE] <main()> スレッドを起動しています...
+ [TRACE] <main()> スレッドが終了するのを待っています...
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> --- exit ---
+ [TRACE] <main()> --- end ---
+ [TRACE] <main()> ### start ###
+ [TRACE] <main()> スレッドを起動しています...
+ [TRACE] <main()> スレッドを起動しています...
+ [TRACE] <thread_func()> $$$ start $$$
+ [TRACE] <thread_func()> Thread is ready.
+ [TRACE] <thread_func()> .
+ [TRACE] <main()> スレッドを起動しています...
+ [TRACE] <main()> スレッドが終了するのを待っています...
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> --- exit ---
+ [TRACE] <main()> --- end ---
+ [TRACE] <main()> ### start ###
+ [TRACE] <main()> スレッドを起動しています...
+ [TRACE] <main()> スレッドを起動しています...
+ [TRACE] <thread_func()> $$$ start $$$
+ [TRACE] <thread_func()> Thread is ready.
+ [TRACE] <thread_func()> .
+ [TRACE] <main()> スレッドを起動しています...
+ [TRACE] <main()> スレッドが終了するのを待っています...
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> --- exit ---
+ [TRACE] <main()> --- end ---
+ [TRACE] <main()> ### start ###
+ [TRACE] <main()> スレッドを起動しています...
+ [TRACE] <main()> スレッドを起動しています...
+ [TRACE] <thread_func()> $$$ start $$$
+ [TRACE] <thread_func()> Thread is ready.
+ [TRACE] <thread_func()> .
+ [TRACE] <main()> スレッドを起動しています...
+ [TRACE] <main()> スレッドが終了するのを待っています...
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> .
+ [TRACE] <thread_func()> --- exit ---
+ [TRACE] <main()> --- end ---
