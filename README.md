@@ -34,3 +34,14 @@ find /usr/local/lib/valgrind/
 rm -fr /usr/local/lib/valgrind
 ```
 
+* デバッグオプションを付けて make すると、ソース位置も出力するようになります。
+
+```
+g++ main.cpp -o main -g
+```
+
+* ソース位置が正しく出力されない場合は、最適化もやめてみます。
+
+```
+g++ main.cpp -o main -O00 -g
+```
