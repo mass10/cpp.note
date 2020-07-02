@@ -45,3 +45,27 @@ g++ main.cpp -o main -g
 ```
 g++ main.cpp -o main -O00 -g
 ```
+
+
+# DLL で標準出力
+
+```CPP
+void CreateDllConsole()
+{
+#ifdef DEBUG
+	setlocale(LC_ALL, "Japanese");
+	_tsetlocale(LC_ALL, _T("Japanese"));
+
+	AllocConsole();
+
+	FILE* fp = NULL;
+	freopen_s(&fp, "CONOUT$", "w", stdout);
+	freopen_s(&fp, "CONOUT$", "w", stderr);
+#endif
+}
+
+BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
+	CreateDllConsole();
+	...
+}
+```
