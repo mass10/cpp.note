@@ -1,4 +1,7 @@
-﻿#include <stdio.h>
+﻿// topwin.cpp
+// 最前面ウィンドウを検出するやつ
+
+#include <stdio.h>
 #include <iostream>
 #include <sstream>
 #include <windows.h>
@@ -10,7 +13,7 @@ std::wstring get_current_timestamp()
 {
     SYSTEMTIME s;
     GetLocalTime(&s);
-    _TCHAR buffer[30] = _T("");
+    wchar_t buffer[99] = _T("");
     wsprintf(buffer, _T("%04d-%02d-%02d %02d:%02d:%02d.%03d"),
         s.wYear, s.wMonth, s.wDay, s.wHour, s.wMinute, s.wSecond, s.wMilliseconds);
     return buffer;
@@ -19,7 +22,7 @@ std::wstring get_current_timestamp()
 std::wstring GetLastErrorText(DWORD error)
 {
     std::wstring text;
-    TCHAR buffer[1000] = _T("");
+    wchar_t buffer[1000] = _T("");
     wsprintf(buffer, _T("0x%08X"), error);
     text.append(buffer);
     FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, error, LANG_USER_DEFAULT, buffer, sizeof(buffer), NULL);
@@ -39,20 +42,20 @@ std::wstring get_window_text(HWND hwnd)
     return title;
 }
 
-void diagnose()
+void describe_foreground_window()
 {
     // 最前面のウィンドウハンドル
-    HWND hwnd = GetForegroundWindow();
+    const HWND hwnd = GetForegroundWindow();
     wchar_t buffer[1024] = _T("");
     wsprintf(buffer, _T("0x%08X"), hwnd);
 
     // ウィンドウのテキスト
-    std::wstring title = get_window_text(hwnd);
+    const std::wstring title = get_window_text(hwnd);
 
     // 出力
-    std::wstringstream text;
-    text << get_current_timestamp() << _T(" [TRACE] HWND: ") << buffer << _T(", TITLE: ") << title;
-    std::wcout << text.str() << std::endl;
+    std::wstringstream line;
+    line << get_current_timestamp() << _T(" [TRACE] HWND: [") << buffer << _T("], TITLE: [") << title << _T("]");
+    std::wcout << line.str() << std::endl;
 }
 
 int main()
@@ -62,7 +65,9 @@ int main()
 
     while (true)
     {
-        diagnose();
-        Sleep(500);
+        describe_foreground_window();
+        Sleep(700);
     }
+
+    return 0;
 }
