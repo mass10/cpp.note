@@ -69,3 +69,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
 	...
 }
 ```
+
+# std::wcout は使うべからず
+
+わすれた
