@@ -73,3 +73,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
 # std::wcout は使うべからず
 
 わすれた
+
+# ICU - International Components for Unicode
+* 日本語文字列の操作に困ったら行くところ
+  http://site.icu-project.org
