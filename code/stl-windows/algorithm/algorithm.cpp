@@ -9,19 +9,21 @@
 #include <crtdbg.h>
 
 // 超手抜き版。今だけ動けばいいとき。
+// ※a-z の順序は保証されていません。
 wchar_t to_upper_tenuki(wchar_t c)
 {
 	return 'a' <= c && c <= 'z' ? c - 32 : c;
 }
 
 // 超手抜き版。今だけ動けばいいとき。
+// ※A-Z の順序は保証されていません。
 wchar_t to_lower_tenuki(wchar_t c)
 {
 	return 'A' <= c && c <= 'Z' ? c + 32 : c;
 }
 
 // 半角文字のみ変換
-wchar_t to_lower_正(wchar_t c)
+wchar_t to_lower(wchar_t c)
 {
 	switch (c)
 	{
@@ -55,7 +57,7 @@ wchar_t to_lower_正(wchar_t c)
 	return c;
 }
 
-wchar_t to_upper_正(wchar_t c)
+wchar_t to_upper(wchar_t c)
 {
 	switch (c)
 	{
@@ -89,6 +91,7 @@ wchar_t to_upper_正(wchar_t c)
 	return c;
 }
 
+// ロケールを意識した大文字変換です。全角文字も変換対象になります。
 std::wstring to_upper(const std::wstring& s)
 {
 	std::wstring result;
@@ -99,14 +102,6 @@ std::wstring to_upper(const std::wstring& s)
 		wprintf(L"[%c] >> [%c]\n", c, letter);
 		result += (letter);
 	}
-	return result;
-}
-
-std::wstring to_lower_x(const std::wstring& s)
-{
-	// XXX 全角文字を破壊します。
-	std::wstring result = s;
-	std::transform(result.begin(), result.end(), result.begin(), ::tolower);
 	return result;
 }
 
@@ -123,6 +118,22 @@ std::wstring to_lower(const std::wstring& s)
 	return result;
 }
 
+// ダメな小文字変換です。全角文字が破壊されます。
+std::wstring to_lower_x(const std::wstring& s)
+{
+	std::wstring result = s;
+	std::transform(result.begin(), result.end(), result.begin(), ::tolower);
+	return result;
+}
+
+// ダメな大文字変換です。全角文字が破壊されます。
+std::wstring to_upper_x(const std::wstring& s)
+{
+	std::wstring result = s;
+	std::transform(result.begin(), result.end(), result.begin(), ::toupper);
+	return result;
+}
+
 int wmain(int argc, wchar_t* argv[])
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -130,13 +141,11 @@ int wmain(int argc, wchar_t* argv[])
 	_wsetlocale(LC_ALL, L"Japanese");
 
 	// サンプル
-    std::wstring s = L"Jimi Hendrix. Ｊｉｍｉ　Ｈｅｎｄｒｉｘ ジミー～";
+    const std::wstring s = L"Jimi Hendrix. Ｊｉｍｉ　Ｈｅｎｄｒｉｘ ジミー～";
 
-	s = to_lower(s);
-	wprintf(L"lower case: [%s]\n", s.c_str());
+	wprintf(L"lower case: [%s]\n", to_lower(s).c_str());
 
-	s = to_upper(s);
-	wprintf(L"upper case: [%s]\n", s.c_str());
+	wprintf(L"upper case: [%s]\n", to_upper(s).c_str());
 
 	return 0;
 }
