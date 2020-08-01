@@ -6,19 +6,18 @@
 #include <stdio.h>
 #include <string>
 #include <locale>
+#include <crtdbg.h>
 
 // 超手抜き版。今だけ動けばいいとき。
-wchar_t to_upper(wchar_t c)
+wchar_t to_upper_tenuki(wchar_t c)
 {
-	if ('a' <= c && c <= 'z') return c - 32;
-	return c;
+	return 'a' <= c && c <= 'z' ? c - 32 : c;
 }
 
 // 超手抜き版。今だけ動けばいいとき。
-wchar_t to_lower(wchar_t c)
+wchar_t to_lower_tenuki(wchar_t c)
 {
-	if ('A' <= c && c <= 'Z') return c + 32;
-	return c;
+	return 'A' <= c && c <= 'Z' ? c + 32 : c;
 }
 
 // 半角文字のみ変換
@@ -126,6 +125,8 @@ std::wstring to_lower(const std::wstring& s)
 
 int wmain(int argc, wchar_t* argv[])
 {
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
 	_wsetlocale(LC_ALL, L"Japanese");
 
 	// サンプル
