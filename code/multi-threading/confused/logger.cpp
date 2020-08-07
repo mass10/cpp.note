@@ -19,6 +19,7 @@ std::wstring get_current_timestamp()
 
 void logger::trace(const _TCHAR* s)
 {
+	// クリティカルセクションを使用しない例
 	if (false) critical_section c;
 
 	// プロセスID
