@@ -10,6 +10,33 @@
 #include <string>
 #include <codecvt>
 
+class indent_controller
+{
+public:
+	indent_controller();
+	~indent_controller();
+	static int current();
+private:
+	static int _current;
+};
+
+int indent_controller::_current = 0;
+
+indent_controller::indent_controller()
+{
+	_current++;
+}
+
+int indent_controller::current()
+{
+	return _current;
+}
+
+indent_controller::~indent_controller()
+{
+	_current--;
+}
+
 //void _trace(const std::wstringstream line)
 //{
 //	// プロセスID
@@ -92,13 +119,33 @@ std::wstring get_window_text(HWND hWnd)
 	return buffer;
 }
 
-int _indent = 0;
-
 std::wstring get_window_class(HWND hWnd)
 {
 	_TCHAR buffer[4000] = L"";
 	GetClassName(hWnd, buffer, sizeof(buffer) / sizeof(_TCHAR));
 	return buffer;
+}
+
+BOOL CALLBACK enum_window_proc(HWND hwnd, LPARAM lParam);
+
+void trace_error()
+{
+	const DWORD error = GetLastError();
+	if (error == 0)
+		return;
+	const std::wstring message = get_last_error_message(error);
+	std::wstringstream line;
+	line << L"[ERROR] ERROR: [" << error << L"], DETAIL: [" << message << L"]";
+	wprintf(L"%s\n", line.str().c_str());
+}
+
+void find_next(HWND hwnd)
+{
+	indent_controller indent;
+	if (!EnumChildWindows(hwnd, enum_window_proc, NULL))
+	{
+		trace_error();
+	}
 }
 
 BOOL CALLBACK enum_window_proc(HWND hwnd, LPARAM lParam)
@@ -115,10 +162,9 @@ BOOL CALLBACK enum_window_proc(HWND hwnd, LPARAM lParam)
 
 	{
 		std::wstringstream line;
-		for (int i = 0; i < _indent; i++)
-		{
+		const int indent = indent_controller::current();
+		for (int i = 0; i < indent; i++)
 			line << L"    ";
-		}
 		line << L"+"
 			<< L" HWND: [" << dword2hex(hwnd) << L"]"
 			<< L", PID: [" << dword2hex(window_process_id) << L"]"
@@ -129,32 +175,19 @@ BOOL CALLBACK enum_window_proc(HWND hwnd, LPARAM lParam)
 	}
 
 	// さらに子ウィンドウを探索...
-	_indent++;
-
-	if (!EnumChildWindows(hwnd, enum_window_proc, NULL))
-	{
-		const DWORD error = GetLastError();
-		if (error != 0)
-		{
-			const std::wstring message = get_last_error_message(error);
-			std::wstringstream line;
-			line << L"[ERROR] ERROR: [" << error << L"], DETAIL: [" << message << L"]";
-			wprintf(L"%s\n", line.str().c_str());
-		}
-	}
-
-	_indent--;
+	find_next(hwnd);
 
 	return TRUE;
 }
 
-int main()
+int main(int argv, char* argc[])
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-	setlocale(LC_ALL, "Japanese");
+	// setlocale(LC_ALL, "Japanese");
 	_tsetlocale(LC_ALL, L"Japanese");
-	
-	LPARAM lparam = 0;
-	EnumWindows(&enum_window_proc, lparam);
+
+	EnumWindows(&enum_window_proc, 0);
+
+	return 0;
 }
