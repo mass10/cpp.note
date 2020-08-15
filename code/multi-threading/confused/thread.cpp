@@ -83,10 +83,6 @@ void thread::run()
 		return;
 	}
 	WaitForSingleObject(handle, INFINITE);
-	while (this->get_current_state() == thread_state::ready) {
-		logger::trace(_T("<thread::run()> Waiting for a new thread ready..."));
-		Sleep(1);
-	}
 	logger::trace(_T("<thread::run()> Created a new thread!"));
 	this->_thread_handle = handle;
 }
