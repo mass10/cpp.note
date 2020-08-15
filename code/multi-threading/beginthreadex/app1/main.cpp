@@ -2,6 +2,8 @@
 #include <tchar.h>
 #include <windows.h>
 #include <process.h>
+#include <crtdbg.h>
+
 #include <fstream>
 #include <sstream>
 #include <clocale>
@@ -9,29 +11,38 @@
 #include <map>
 #include <string>
 
+
+
+#ifdef UNICODE
+typedef std::wstring string;
+typedef std::wstringstream stringstream;
+#else
+typedef std::string string;
+typedef std::stringstream stringstream;
+#endif
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // 各種汎用操作
 
-std::wstring get_current_timestamp()
-{
+string get_current_timestamp() {
 	SYSTEMTIME s;
 	GetLocalTime(&s);
 	_TCHAR buffer[99] = _T("");
-	wsprintf(buffer, _T("%04d-%02d-%02d %02d:%02d:%02d.%03d"), s.wYear, s.wMonth, s.wDay, s.wHour, s.wMinute, s.wSecond, s.wMilliseconds);
+	_stprintf_s(buffer, sizeof(buffer) / sizeof(_TCHAR), _T("%04d-%02d-%02d %02d:%02d:%02d.%03d"),
+		s.wYear, s.wMonth, s.wDay, s.wHour, s.wMinute, s.wSecond, s.wMilliseconds);
 	return buffer;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-class critical_section_lifetime
-{
+class critical_section_lifetime {
 	friend class application;
 private:
 	critical_section_lifetime();
 	~critical_section_lifetime();
 };
 
-class critical_section
-{
+class critical_section {
 	friend class critical_section_lifetime;
 public:
 	critical_section();
@@ -42,141 +53,105 @@ private:
 	static CRITICAL_SECTION _section;
 };
 
-critical_section_lifetime::critical_section_lifetime()
-{
+CRITICAL_SECTION critical_section::_section;
+
+critical_section_lifetime::critical_section_lifetime() {
 	critical_section::init();
 }
 
-critical_section_lifetime::~critical_section_lifetime()
-{
+critical_section_lifetime::~critical_section_lifetime() {
 	critical_section::free();
 }
 
-CRITICAL_SECTION critical_section::_section;
-
-void critical_section::init()
-{
+void critical_section::init() {
 	memset(&_section, 0x00, sizeof(_section));
 	InitializeCriticalSection(&_section);
 }
 
-void critical_section::free()
-{
+void critical_section::free() {
 	DeleteCriticalSection(&_section);
 }
 
-critical_section::critical_section()
-{
+critical_section::critical_section() {
 	EnterCriticalSection(&_section);
 }
 
-critical_section::~critical_section()
-{
+critical_section::~critical_section() {
 	LeaveCriticalSection(&_section);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // ロギング
 
-class logger
-{
+class logger {
 public:
 	static void trace(const _TCHAR* s);
-	static void trace(const std::wstring& s);
-	static void trace(const std::wstringstream& s);
+	static void trace(const string& s);
+	static void trace(const stringstream& s);
 	static void error(const _TCHAR* s);
-	static void error(const std::wstring& s);
-	static void error(const std::wstringstream& s);
+	static void error(const string& s);
+	static void error(const stringstream& s);
 };
 
-void logger::trace(const _TCHAR* s)
-{
+void _trace(const _TCHAR* level, const _TCHAR* s) {
 	critical_section c;
 
 	// プロセスID
 	const DWORD processs_id = GetCurrentProcessId();
-	char process_id_buffer[32] = "";
-	sprintf_s(process_id_buffer, "%08x", processs_id);
+	_TCHAR process_id_buffer[9] = _T("");
+	_stprintf_s(process_id_buffer, sizeof(process_id_buffer) / sizeof(_TCHAR), _T("%08x"), processs_id);
 
 	// スレッドID
 	const DWORD thread_id = GetCurrentThreadId();
-	char thread_id_buffer[32] = "";
-	sprintf_s(thread_id_buffer, "%08x", thread_id);
+	_TCHAR thread_id_buffer[9] = _T("");
+	_stprintf_s(thread_id_buffer, sizeof(thread_id_buffer) / sizeof(_TCHAR), _T("%08x"), thread_id);
 
 	// timestamp
-	const std::wstring timestamp = get_current_timestamp();
+	const string timestamp = get_current_timestamp();
+
+	stringstream line;
+	line << timestamp.c_str() << _T(" (process: ") << process_id_buffer << _T(", thread: ") << thread_id_buffer << _T(")") << _T(" [") << level << _T("] ") << s << std::endl;
 
 	// ファイル
 	{
 		std::wofstream ofs(_T("application.log"), std::ios::app);
 		auto enc1 = ofs.imbue({ {}, new std::codecvt_utf8<wchar_t, 0x10FFFF> });
-		ofs << timestamp.c_str() << _T(" (process: ") << process_id_buffer << _T(", thread: ") << thread_id_buffer << _T(")") << _T(" [TRACE] ") << s << std::endl;
+		ofs << line.str();
 		ofs.close();
 	}
 
 	// 標準出力
 	{
-		auto enc2 = std::wcout.imbue({ {}, new std::codecvt_utf8<wchar_t, 0x10FFFF> });
-		//auto enc2 = std::wcout.imbue(std::locale("Japanese"));
-		std::wcout << timestamp.c_str() << _T(" (process: ") << process_id_buffer << _T(", thread: ") << thread_id_buffer << _T(")") << _T(" [TRACE] ") << s << std::endl;
+		_tprintf(line.str().c_str());
 	}
 }
 
-void logger::error(const _TCHAR* s)
-{
-	critical_section c;
-
-	// プロセスID
-	const DWORD processs_id = GetCurrentProcessId();
-	char process_id_buffer[32] = "";
-	sprintf_s(process_id_buffer, "%08x", processs_id);
-
-	// スレッドID
-	const DWORD thread_id = GetCurrentThreadId();
-	char thread_id_buffer[32] = "";
-	sprintf_s(thread_id_buffer, "%08x", thread_id);
-
-	// timestamp
-	const std::wstring timestamp = get_current_timestamp();
-
-	// ファイル
-	{
-		std::wofstream ofs(_T("application.log"), std::ios::app);
-		auto enc1 = ofs.imbue({ {}, new std::codecvt_utf8<wchar_t, 0x10FFFF> });
-		ofs << timestamp.c_str() << _T(" (process: ") << process_id_buffer << _T(", thread: ") << thread_id_buffer << _T(")") << _T(" [ERROR] ") << s << std::endl;
-		ofs.close();
-	}
-
-	// 標準出力
-	{
-		auto enc2 = std::wcout.imbue({ {}, new std::codecvt_utf8<wchar_t, 0x10FFFF> });
-		// auto enc2 = std::wcout.imbue(std::locale("Japanese"));
-		std::wcout << timestamp.c_str() << _T(" (process: ") << process_id_buffer << _T(", thread: ") << thread_id_buffer << _T(")") << _T(" [ERROR] ") << s << std::endl;
-	}
+void logger::trace(const _TCHAR* s) {
+	_trace(_T("TRACE"), s);
 }
 
-void logger::trace(const std::wstring& s)
-{
-	trace(s.c_str());
+void logger::error(const _TCHAR* s) {
+	_trace(_T("ERROR"), s);
 }
 
-void logger::trace(const std::wstringstream& s)
-{
-	trace(s.str());
+void logger::trace(const std::wstring& s) {
+	_trace(_T("TRACE"), s.c_str());
+}
+
+void logger::trace(const std::wstringstream& s) {
+	_trace(_T("TRACE"), s.str().c_str());
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // スレッド操作
 
-enum class thread_state
-{
+enum class thread_state {
 	ready,
 	running,
 	closing
 };
 
-class thread
-{
+class thread {
 public:
 	thread();
 	~thread();
@@ -194,51 +169,43 @@ private:
 	HANDLE _thread_handle;
 };
 
-thread::thread()
-{
+thread::thread() {
 	this->_thread_id = 0;
 	this->_thread_handle = NULL;
 	this->_state = thread_state::ready;
 }
 
-thread::~thread()
-{
+thread::~thread() {
 	if (this->_thread_handle == NULL)
 		return;
 	CloseHandle(this->_thread_handle);
 	this->_thread_handle = NULL;
 }
 
-bool thread::alive() const
-{
+bool thread::alive() const {
 	return this->_request == _T("");
 }
 
-void thread::cancel()
-{
+void thread::cancel() {
 	this->_request = _T("cancel");
 }
 
-std::wstring thread::get_request() const
-{
+std::wstring thread::get_request() const {
 	return this->_request;
 }
 
-unsigned __stdcall thread::thread_func(void* thread_param)
-{
+unsigned __stdcall thread::thread_func(void* thread_param) {
 	thread* pthis = (thread*)thread_param;
 	pthis->main();
 	_endthreadex(0);
 	return 0;
 }
 
-void thread::main()
-{
+void thread::main() {
 	this->_state = thread_state::running;
 	logger::trace(_T("<thread_func()> $$$ start $$$"));
 	unsigned int i = 0;
-	while (this->alive())
-	{
+	while (this->alive()) {
 		if (10 <= i)
 			break;
 		Sleep(100);
@@ -249,8 +216,7 @@ void thread::main()
 	logger::trace(_T("<thread_func()> --- end ---"));
 }
 
-void thread::wait()
-{
+void thread::wait() {
 	if (this->_thread_handle == NULL)
 		return;
 	logger::trace(_T("<thread::wait()> スレッドの終了を待っています..."));
@@ -260,8 +226,7 @@ void thread::wait()
 	this->_thread_handle = NULL;
 }
 
-void thread::run()
-{
+void thread::run() {
 	this->wait();
 	HANDLE handle = (HANDLE)_beginthreadex(NULL, 0, &thread_func, (void*)this, 0, &this->_thread_id);
 	if (handle == NULL) {
@@ -279,8 +244,7 @@ void thread::run()
 ///////////////////////////////////////////////////////////////////////////////
 // アプリケーション本体
 
-class application
-{
+class application {
 public:
 	application();
 	~application();
@@ -289,18 +253,14 @@ private:
 	critical_section_lifetime _critical_section_lifetime;
 };
 
-application::application()
-{
-
+application::application() {
 }
 
-application::~application()
-{
-
+application::~application() {
 }
 
-void application::run()
-{
+void application::run() {
+
 	logger::trace(_T("<main()> ### start ###"));
 
 	thread t1;
@@ -321,8 +281,12 @@ void application::run()
 ///////////////////////////////////////////////////////////////////////////////
 // エントリーポイント
 
-int main()
-{
+int main() {
+
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
+	_tsetlocale(LC_ALL, _T("Japanese"));
+
 	application app;
 	app.run();
 }
