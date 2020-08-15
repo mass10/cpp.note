@@ -233,6 +233,7 @@ void thread::run() {
 		logger::error(_T("<thread::run()> Cannot create a new thread..."));
 		return;
 	}
+	WaitForSingleObject(handle, INFINITE);
 	while (this->_state == thread_state::ready) {
 		logger::trace(_T("<thread::run()> Waiting for a new thread ready..."));
 		Sleep(1);
