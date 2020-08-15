@@ -77,3 +77,16 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
 # ICU - International Components for Unicode
 * 日本語文字列の操作に困ったら行くところ
   http://site.icu-project.org
+
+# warning C4566: ユニバーサル文字名 '\u00B5' によって表示されている文字は、現在のコード ページ (932) で表示できません (Microsoft Visual Studio 2015 Community, 2020-08-15)
+
+1. ソースコードは UTF-8 with BOM で保管。
+
+2. コンパイラの追加オプションに `/execution-charset:utf-8` または `/utf-8` を追加する。
+    * Microsoft Visual Studio 2015 Community  
+      → プロジェクトの設定  
+      → 構成プロパティ  
+      → C/C++  
+      → コマンドライン  
+      → 追加のオプション  
+    * なお `/source-charset:utf-8` は効かなかった。
