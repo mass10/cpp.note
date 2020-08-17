@@ -4,3 +4,15 @@
 [2020-08-17 10:42:24.743] [myapp1] [info] (operating...)
 [2020-08-17 10:42:24.743] [myapp1] [info] (operating...)
 [2020-08-17 10:42:24.743] [myapp1] [info] --- END ---
+[2020-08-17 10:52:39.839] [myapp1] [info] ### START ###
+[2020-08-17 10:52:39.840] [myapp1] [info] (operating...)
+[2020-08-17 10:52:39.840] [myapp1] [info] (operating...)
+[2020-08-17 10:52:39.840] [myapp1] [info] (operating...)
+[2020-08-17 10:52:39.840] [myapp1] [info] (operating...)
+[2020-08-17 10:52:39.840] [myapp1] [info] (operating...)
+[2020-08-17 10:52:39.840] [myapp1] [info] (operating...)
+[2020-08-17 10:52:39.840] [myapp1] [info] (operating...)
+[2020-08-17 10:52:39.840] [myapp1] [info] (operating...)
+[2020-08-17 10:52:39.840] [myapp1] [info] (operating...)
+[2020-08-17 10:52:39.840] [myapp1] [info] (operating...)
+[2020-08-17 10:52:39.840] [myapp1] [info] --- END ---
