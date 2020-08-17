@@ -1,0 +1,6 @@
+[2020-08-17 10:42:24.734] [myapp1] [info] (operating...)
+[2020-08-17 10:42:24.743] [myapp1] [info] (operating...)
+[2020-08-17 10:42:24.743] [myapp1] [info] (operating...)
+[2020-08-17 10:42:24.743] [myapp1] [info] (operating...)
+[2020-08-17 10:42:24.743] [myapp1] [info] (operating...)
+[2020-08-17 10:42:24.743] [myapp1] [info] --- END ---
