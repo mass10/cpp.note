@@ -1,0 +1,15 @@
+.vs
+
+/app1/Debug
+/app1/Release
+/app1/log
+
+/mutex/Debug
+/mutex/Release
+/mutex/log
+
+/common/Debug
+/common/Release
+
+/Debug
+/Release
