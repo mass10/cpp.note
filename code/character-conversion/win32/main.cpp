@@ -97,16 +97,16 @@ void convert_file()
 // エントリーポイント
 int _tmain(int argc, _TCHAR* argv[])
 {
-    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
 	// 標準出力にのみ影響、処理結果に影響しない
-    _tsetlocale(LC_ALL, _T("Japanese.UTF-8"));
+	_tsetlocale(LC_ALL, _T("Japanese.UTF-8"));
 
 	_tprintf(_T("[TRACE] ### UTF-8 バイト配列 → UTF-8 wchar_t に変換するテスト 開始 ###\n"));
 
 	convert_file();
 
 	_tprintf(_T("[TRACE] --- 終了 ---\n"));
-	
+
 	return 0;
 }
