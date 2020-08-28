@@ -29,7 +29,8 @@ std::string read_file(const _TCHAR* path)
 	return content;
 }
 
-std::wstring sjis2utf8(const char* src)
+// UTF-8 のバイト配列を、wchar_t 配列に変換します。wchar_t の内部構造は UTF-16 LE となります。
+std::wstring utf8_to_wchar(const char* src)
 {
 	const int ENC_TYPE = CP_UTF8;
 
@@ -86,7 +87,7 @@ void convert_file()
 	printf("[TRACE] SOURCE [%s]\n", content.c_str());
 
 	// wchar_t 配列に変換します。
-	std::wstring new_name = sjis2utf8(content.c_str());
+	std::wstring new_name = utf8_to_wchar(content.c_str());
 	_tprintf(_T("[TRACE] RESULT [%s]\n"), new_name.c_str());
 
 	// ファイルに保存します。
