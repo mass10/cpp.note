@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include <Windows.h>
+#include <locale.h>
 #include <oleauto.h>
 #include <string>
 
