@@ -33,8 +33,6 @@ std::wstring sjis2utf8(const char* src)
 {
 	const int ENC_TYPE = CP_UTF8;
 
-	const size_t original_length = strlen(src);
-
 	const unsigned int required_size_of_new_buffer = MultiByteToWideChar(CP_UTF8, 0, src, -1, NULL, 0);
 	_tprintf(_T("[TRACE] Required size of new buffer in bytes: [%d]\n"), required_size_of_new_buffer);
 
@@ -46,14 +44,15 @@ std::wstring sjis2utf8(const char* src)
 		CP_UTF8,
 		0,
 		src, // Pointer to the character string to convert.
-		strlen(src), // Size, in bytes, of the string indicated by the lpMultiByteStr parameter
+		-1, // Size, in bytes, of the string indicated by the lpMultiByteStr parameter
 		new_buffer, // Pointer to a buffer that receives the converted string.
 		required_size_of_new_buffer// Size, in characters
 	);
 
 	_tprintf(_T("[TRACE] Affected length in characters: [%d]\n"), result);
 
-	std::wstring new_name = new_buffer;
+	const std::wstring new_name = new_buffer;
+
 	delete(new_buffer);
 
 	_tprintf(_T("[TRACE] 変換結果: ["));
