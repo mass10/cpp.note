@@ -54,7 +54,7 @@ std::wstring utf8_to_wchar(const char* src)
 
 	const std::wstring new_name = new_buffer;
 
-	delete(new_buffer);
+	delete[] new_buffer;
 
 	_tprintf(_T("[TRACE] 変換結果: ["));
 	_tprintf(new_name.c_str());
