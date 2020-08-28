@@ -1,0 +1,8 @@
+.vs
+x64
+Debug
+ipch
+*.VC.db
+*.db
+*.opendb
+*.vcxproj.files
