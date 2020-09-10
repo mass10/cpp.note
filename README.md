@@ -90,3 +90,6 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
       → コマンドライン  
       → 追加のオプション  
     * なお `/source-charset:utf-8` は効かなかった。
+
+# 2020-09-10 shared_ptr、unique_ptr を扱う際の注意点
+https://postd.cc/top-10-dumb-mistakes-avoid-c-11-smart-pointers/
