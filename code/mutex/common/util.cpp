@@ -140,3 +140,9 @@ void _trace(const std::wstringstream& message) {
 
 	_trace(message.str());
 }
+
+DWORD getExitCodeOfProcess(const HANDLE& handle) {
+	DWORD exitCode = 0;
+	GetExitCodeProcess(handle, &exitCode);
+	return exitCode;
+}
