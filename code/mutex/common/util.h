@@ -4,6 +4,8 @@
 
 #include <Windows.h>
 #include <tchar.h>
+#include <string>
+#include <sstream>
 #include "string.h"
 
 string GetLastErrorText();
@@ -13,11 +15,12 @@ string GetCurrentTimestamp();
 string _get_process_id();
 string _get_thread_id();
 
+void _trace(const _TCHAR* s);
+void _trace(const std::wstring& s);
+void _trace(const std::wstringstream& s);
+
 /*
 void _write_log(const _TCHAR* level, const _TCHAR* s);
-void _trace(const _TCHAR* s);
-void _trace(const string& s);
-void _trace(const stringstream& s);
 void _info(const _TCHAR* s);
 void _info(const string& s);
 void _info(const stringstream& s);
