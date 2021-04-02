@@ -4,6 +4,7 @@
 #include "string.h"
 #include "myprocess.h"
 #include "..\common\mutex.h"
+#include "..\common\util.h"
 
 // アプリケーション本体
 class application
@@ -14,10 +15,7 @@ public:
 
 void application::run()
 {
-	{
-		mymutex lock;
-		_tprintf(_T("### 開始 ###\n"));
-	}
+	_trace(_T("### 開始 ###\n"));
 
 	process process1(_T("app1.exe"));
 	process process2(_T("app1.exe"));
@@ -31,10 +29,7 @@ void application::run()
 	process4.join();
 	process5.join();
 
-	{
-		mymutex lock;
-		_tprintf(_T("--- 終了 ---\n"));
-	}
+	_trace(_T("--- 終了 ---\n"));
 }
 
 // エントリーポイント
