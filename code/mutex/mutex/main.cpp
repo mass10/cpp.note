@@ -1,11 +1,11 @@
-#include <Windows.h>
+ï»¿#include <Windows.h>
 #include <crtdbg.h>
 #include <tchar.h>
 #include "string.h"
 #include "myprocess.h"
 #include "..\common\mutex.h"
 
-// ƒAƒvƒŠƒP[ƒVƒ‡ƒ“–{‘Ì
+// ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³æœ¬ä½“
 class application
 {
 public:
@@ -16,7 +16,7 @@ void application::run()
 {
 	{
 		mymutex lock;
-		_tprintf(_T("### ŠJn ###\n"));
+		_tprintf(_T("### é–‹å§‹ ###\n"));
 	}
 
 	process process1(_T("app1.exe"));
@@ -33,11 +33,11 @@ void application::run()
 
 	{
 		mymutex lock;
-		_tprintf(_T("--- I—¹ ---\n"));
+		_tprintf(_T("--- çµ‚äº† ---\n"));
 	}
 }
 
-// ƒGƒ“ƒgƒŠ[ƒ|ƒCƒ“ƒg
+// ã‚¨ãƒ³ãƒˆãƒªãƒ¼ãƒã‚¤ãƒ³ãƒˆ
 int _tmain(int argc, _TCHAR* argv[])
 {
 	UNREFERENCED_PARAMETER(argc);
