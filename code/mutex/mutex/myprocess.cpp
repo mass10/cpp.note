@@ -34,26 +34,11 @@ void process::join()
 			_trace(line);
 		}
 		{
-			_trace(_T("try WaitForSingleObject"));
 			const auto result = WaitForSingleObject(this->process_info.hProcess, INFINITE);
-			if (result == WAIT_OBJECT_0)
-			{
-				_trace(_T("WAIT_OBJECT_0"));
-				DWORD exitCode = 0;
-				GetExitCodeProcess(this->process_info.hProcess, &exitCode);
-				std::wstringstream line;
-				line << _T("プロセスはコード ") << exitCode << _T(" で終了しました。");
-				_trace(line);
-			}
-			else if (result == WAIT_ABANDONED)
-			{
-				_trace(_T("WAIT_ABANDONED"));
-			}
-			else
-			{
-				_trace(_T("プロセスの待機に失敗しました。後続のエラーを確認してください。"));
-				report_error();
-			}
+			const DWORD exitCode = getExitCodeOfProcess(this->process_info.hProcess);
+			std::wstringstream line;
+			line << _T("プロセスはコード ") << exitCode << _T(" で終了しました。");
+			_trace(line);
 		}
 		CloseHandle(this->process_info.hProcess);
 		// report_error();
