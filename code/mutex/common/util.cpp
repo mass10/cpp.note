@@ -3,6 +3,7 @@
 #include "pch.h"
 #include "util.h"
 #include "string.h"
+#include "mutex.h"
 #include <Windows.h>
 #include <tchar.h>
 #include <fstream>
@@ -99,11 +100,15 @@ string GetCurrentTimestamp()
 
 void report_error()
 {
+	// ※※※ ロギングの排他ロック ※※※
+	mymutex lock;
 	const DWORD error = GetLastError();
 	if (error == 0)
 		return;
+	auto timestamp = get_current_timestamp();
 	string message_text = GetLastErrorText(error);
-	_tprintf(_T("[FATAL] 予期しないエラーです。 理由: %s(%d)\n"), message_text.c_str(), error);
+	const DWORD process_id = GetCurrentProcessId();
+	_tprintf(_T("%s [FATAL] [process %d] 予期しないエラーです。 理由: %s(%d)\n"), timestamp.c_str(), process_id, message_text.c_str(), error);
 	fflush(stdout);
 }
 
@@ -115,4 +120,23 @@ string get_current_timestamp()
 	wsprintf(buffer, _T("%04d-%02d-%02d %02d:%02d:%02d.%03d"),
 		s.wYear, s.wMonth, s.wDay, s.wHour, s.wMinute, s.wSecond, s.wMilliseconds);
 	return buffer;
+}
+
+void _trace(const _TCHAR* message) {
+
+	// ※※※ ロギングの排他ロック ※※※
+	mymutex lock;
+	const DWORD process_id = GetCurrentProcessId();
+	_tprintf(_T("%s [TRACE] [process %d] %s\n"), get_current_timestamp().c_str(), process_id, message);
+	fflush(stdout);
+}
+
+void _trace(const std::wstring& message) {
+
+	_trace(message.c_str());
+}
+
+void _trace(const std::wstringstream& message) {
+
+	_trace(message.str());
 }
