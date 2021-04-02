@@ -1,4 +1,4 @@
-#include "pch.h"
+Ôªø#include "pch.h"
 #include "mutex.h"
 #include "string.h"
 #include "util.h"
@@ -14,7 +14,7 @@ HANDLE create_mutex() {
 	//secAttribute.lpSecurityDescriptor = &sd;
 	//secAttribute.bInheritHandle = TRUE;
 
-	HANDLE handle = CreateMutex(NULL, FALSE, _T("app1 ÇÃ mutex 2"));
+	HANDLE handle = CreateMutex(NULL, FALSE, _T("app1 „ÅÆ mutex 2"));
 	const DWORD error = GetLastError();
 	if (handle == NULL)
 	{
