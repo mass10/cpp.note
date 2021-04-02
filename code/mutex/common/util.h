@@ -40,3 +40,4 @@ void rtrim(wchar_t* s);
 void rtrim(char* s);
 
 string get_current_timestamp();
+DWORD getExitCodeOfProcess(const HANDLE& handle);
