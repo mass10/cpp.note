@@ -19,7 +19,6 @@ void application::run() {
 	std::random_device generator;
 	const unsigned int task_id = generator();
 
-	_trace(_T("$$$ start $$$"));
 	_trace(_T("(^ ◇ ^) 入店～"));
 
 	const unsigned long long start_tick = GetTickCount64();
@@ -40,11 +39,10 @@ void application::run() {
 		Sleep(200);
 		_trace(_T("(^ ◇ ^) アアア～♪ <2番"));
 		Sleep(200);
-		_trace(_T("(~ ◇ ~) つかれた...\n"));
+		_trace(_T("(~ ◇ ~) つかれた..."));
 	}
 
 	_trace(_T("(- ◇ -) 退出..."));
-	_trace(_T("--- end ---"));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
