@@ -14,11 +14,12 @@ void _trace(const _TCHAR* message) {
 	fflush(stdout);
 }
 
-int main() {
+class application {
+public:
+	void run();
+};
 
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-
-	_tsetlocale(LC_ALL, _T("Japanese"));
+void application::run() {
 
 	std::random_device generator;
 	const unsigned int task_id = generator();
@@ -52,4 +53,14 @@ int main() {
 		mymutex lock;
 		_trace(_T("退出..."));
 	}
+}
+
+int main() {
+
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
+	_tsetlocale(LC_ALL, _T("Japanese"));
+
+	application app;
+	app.run();
 }
