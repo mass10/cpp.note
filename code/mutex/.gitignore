@@ -13,3 +13,8 @@
 
 /Debug
 /Release
+
+/x64
+/app1/x64
+/mutex/x64
+/common/x64
