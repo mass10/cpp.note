@@ -1,4 +1,4 @@
-#include "myprocess.h"
+ï»¿#include "myprocess.h"
 #include "..\common\util.h"
 #include "..\common\mutex.h"
 
@@ -17,7 +17,7 @@ process::process(const _TCHAR* path)
 	}
 
 	mymutex lock;
-	_tprintf(_T("ƒvƒƒZƒX‚ð‹N“®‚µ‚Ü‚µ‚½B(pid: %d)\n"), this->process_info.dwProcessId);
+	_tprintf(_T("ãƒ—ãƒ­ã‚»ã‚¹ã‚’èµ·å‹•ã—ã¾ã—ãŸã€‚(pid: %d)\n"), this->process_info.dwProcessId);
 }
 
 void process::join()
@@ -26,7 +26,7 @@ void process::join()
 	{
 		{
 			mymutex lock;
-			_tprintf(_T("ƒvƒƒZƒXI—¹‚ð‘Ò‹@‚µ‚Ä‚¢‚Ü‚·... (pid: %d)\n"), this->process_info.dwProcessId);
+			_tprintf(_T("ãƒ—ãƒ­ã‚»ã‚¹çµ‚äº†ã‚’å¾…æ©Ÿã—ã¦ã„ã¾ã™... (pid: %d)\n"), this->process_info.dwProcessId);
 		}
 		WaitForSingleObject(this->process_info.hProcess, INFINITE);
 		report_error();
