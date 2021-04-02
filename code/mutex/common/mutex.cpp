@@ -3,7 +3,7 @@
 #include "string.h"
 #include "util.h"
 
-HANDLE create_mutex() {
+HANDLE create_mutex(const _TCHAR* mutex_name) {
 
 	//SECURITY_DESCRIPTOR sd;
 	//InitializeSecurityDescriptor(&sd, SECURITY_DESCRIPTOR_REVISION);
@@ -14,7 +14,7 @@ HANDLE create_mutex() {
 	//secAttribute.lpSecurityDescriptor = &sd;
 	//secAttribute.bInheritHandle = TRUE;
 
-	HANDLE handle = CreateMutex(NULL, FALSE, _T("app1 の mutex 2"));
+	HANDLE handle = CreateMutex(NULL, FALSE, mutex_name);
 	const DWORD error = GetLastError();
 	if (handle == NULL)
 	{
@@ -30,7 +30,7 @@ mymutex::mymutex() :
 	_handle(NULL)
 {
 	while (true) {
-		this->_handle = create_mutex();
+		this->_handle = create_mutex(_T("app1 の mutex 2"));
 		if (this->_handle == NULL) {
 			Sleep(5);
 			continue;
