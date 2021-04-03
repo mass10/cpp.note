@@ -144,10 +144,6 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="string.h" />
-    <ClInclude Include="common.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\common\common.vcxproj">
       <Project>{0800ed7a-6772-4c5a-8e93-2accb78cbacf}</Project>
     </ProjectReference>

@@ -1,6 +1,7 @@
 ﻿// UTF-8 with BOM
 #pragma once
 
+/*
 #include <string>
 #include <sstream>
 
@@ -11,3 +12,4 @@ typedef std::wstringstream stringstream;
 typedef std::string string;
 typedef std::stringstream stringstream;
 #endif
+*/

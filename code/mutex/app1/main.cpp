@@ -1,11 +1,30 @@
 ﻿// UTF-8 with BOM
 
-#include "common.h"
 #include <Windows.h>
 #include <random>
 #include <iostream>
 #include "..\common\util.h"
 #include "..\common\mutex.h"
+
+///////////////////////////////////////////////////////////////////////////////
+// 汎用操作
+
+string choose_face_aa() {
+
+	SYSTEMTIME time = {};
+	GetLocalTime(&time);
+
+	auto timestamp = time.wMilliseconds;
+
+	auto seed = timestamp % 5;
+	switch (seed) {
+	case 0: return _T("(= ◇ =)");
+	case 1: return _T("(\\ ◇ \\)");
+	case 2: return _T("(゜◇゜)");
+	case 3: return _T("(^ ◇ ^)");
+	default: return _T("(- ◇ -)");
+	}
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // アプリケーション本体
@@ -19,7 +38,9 @@ void application::run() {
 	std::random_device generator;
 	const unsigned int task_id = generator();
 
-	_trace(_T("(^ ◇ ^) 入店～"));
+	auto face_aa = choose_face_aa();
+
+	log_trace(face_aa + _T(" 入店～"));
 
 	const unsigned long long start_tick = GetTickCount64();
 
@@ -34,15 +55,15 @@ void application::run() {
 
 		// ※※※ 連続した走査の排他ロック ※※※
 		mymutex lock;
-		_trace(_T("(^ ◇ ^) ★わたしの歌ーーーーー！"));
-		_trace(_T("(^ ◇ ^) アアア～♪ <1番"));
+		log_trace(face_aa + _T(" ★わたしの歌ーーーーー！"));
+		log_trace(face_aa + _T(" アアア～♪ <1番"));
 		Sleep(200);
-		_trace(_T("(^ ◇ ^) アアア～♪ <2番"));
+		log_trace(face_aa + _T(" アアア～♪ <2番"));
 		Sleep(200);
-		_trace(_T("(~ ◇ ~) つかれた..."));
+		log_trace(face_aa + _T(" つかれた..."));
 	}
 
-	_trace(_T("(- ◇ -) 退出..."));
+	log_trace(face_aa + _T(" 退出..."));
 }
 
 ///////////////////////////////////////////////////////////////////////////////

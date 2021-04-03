@@ -8,36 +8,38 @@
 #include <sstream>
 #include "string.h"
 
-string GetLastErrorText();
-string GetLastErrorText(DWORD error);
+string get_last_error_text();
+string get_last_error_text(DWORD error);
 string get_date_string0();
-string GetCurrentTimestamp();
-string _get_process_id();
-string _get_thread_id();
+string get_current_timestamp();
+string get_process_id();
+string get_thread_id();
 
-void _trace(const _TCHAR* s);
-void _trace(const std::wstring& s);
-void _trace(const std::wstringstream& s);
+void write_log(const _TCHAR* level, const _TCHAR* s);
 
-/*
-void _write_log(const _TCHAR* level, const _TCHAR* s);
-void _info(const _TCHAR* s);
-void _info(const string& s);
-void _info(const stringstream& s);
-void _debug(const _TCHAR* s);
-void _debug(const string& s);
-void _debug(const stringstream& s);
-void _warn(const _TCHAR* s);
-void _warn(const string& s);
-void _warn(const stringstream& s);
-void _error(const _TCHAR* s);
-void _error(const string& s);
-void _error(const stringstream& s);
-*/
+void log_trace(const _TCHAR* s);
+void log_trace(const string& s);
+void log_trace(const stringstream& s);
+
+void log_debug(const _TCHAR* s);
+void log_debug(const string& s);
+void log_debug(const stringstream& s);
+
+void log_info(const _TCHAR* s);
+void log_info(const string& s);
+void log_info(const stringstream& s);
+
+void log_warn(const _TCHAR* s);
+void log_warn(const string& s);
+void log_warn(const stringstream& s);
+
+void log_error(const _TCHAR* s);
+void log_error(const string& s);
+void log_error(const stringstream& s);
 
 void report_error();
+
 void rtrim(wchar_t* s);
 void rtrim(char* s);
 
-string get_current_timestamp();
-DWORD getExitCodeOfProcess(const HANDLE& handle);
+DWORD get_exitcode_of_process(const HANDLE& handle);

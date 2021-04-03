@@ -15,7 +15,7 @@ public:
 
 void application::run()
 {
-	_trace(_T("### 開始 ###\n"));
+	log_trace(_T("### 開始 ###"));
 
 	process process1(_T("app1.exe"));
 	process process2(_T("app1.exe"));
@@ -29,7 +29,7 @@ void application::run()
 	process4.join();
 	process5.join();
 
-	_trace(_T("--- 終了 ---\n"));
+	log_trace(_T("--- 終了 ---"));
 }
 
 // エントリーポイント

@@ -9,15 +9,15 @@
 #include <fstream>
 #include <codecvt>
 
-void rtrim(wchar_t* s)
-{
+void rtrim(wchar_t* s) {
+
+	if (s == NULL) return;
 	if (s[0] == 0x00) return;
 
 	while (*s)
 		s++;
 
-	for (; ; s--)
-	{
+	for (; ; s--) {
 		const wchar_t c = *s;
 		if (c == ' ')
 			*s = 0x00;
@@ -34,15 +34,15 @@ void rtrim(wchar_t* s)
 	}
 }
 
-void rtrim(char* s)
-{
+void rtrim(char* s) {
+
+	if (s == NULL) return;
 	if (s[0] == 0x00) return;
 
 	while (*s)
 		s++;
 
-	for (; ; s--)
-	{
+	for (; ; s--) {
 		const char c = *s;
 		if (c == ' ')
 			*s = 0x00;
@@ -59,28 +59,28 @@ void rtrim(char* s)
 	}
 }
 
-string GetLastErrorText()
-{
-	return GetLastErrorText(GetLastError());
+string get_last_error_text() {
+
+	return get_last_error_text(GetLastError());
 }
 
-string GetLastErrorText(DWORD error)
-{
+string get_last_error_text(DWORD error) {
+
 	_TCHAR buffer[1000] = _T("");
 	FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, error, LANG_USER_DEFAULT, buffer, sizeof(buffer) / sizeof(_TCHAR), NULL);
 	rtrim(buffer);
 	return buffer;
 }
 
-SYSTEMTIME get_local_time()
-{
+SYSTEMTIME get_local_time() {
+
 	SYSTEMTIME s;
 	GetLocalTime(&s);
 	return s;
 }
 
-string get_date_string0()
-{
+string get_date_string0() {
+
 	const SYSTEMTIME s = get_local_time();
 	_TCHAR buffer[99] = _T("");
 	_stprintf_s(buffer, sizeof(buffer) / sizeof(_TCHAR),
@@ -88,9 +88,23 @@ string get_date_string0()
 	return buffer;
 }
 
-string GetCurrentTimestamp()
-{
-	const SYSTEMTIME s = get_local_time();
+void report_error() {
+
+	const DWORD error = GetLastError();
+	if (error == 0)
+		return;
+
+	auto timestamp = get_current_timestamp();
+	string message_text = get_last_error_text(error);
+	stringstream line;
+	line << _T("予期しないエラーです。理由: ") << message_text.c_str() << _T(" (") << error << _T(")");
+	log_error(line);
+}
+
+string get_current_timestamp() {
+
+	SYSTEMTIME s;
+	GetLocalTime(&s);
 	_TCHAR buffer[99] = _T("");
 	_stprintf_s(buffer, sizeof(buffer) / sizeof(_TCHAR),
 		_T("%04u-%02u-%02u %02u:%02u:%02u.%03u"),
@@ -98,50 +112,49 @@ string GetCurrentTimestamp()
 	return buffer;
 }
 
-void report_error()
-{
-	// ※※※ ロギングの排他ロック ※※※
-	mymutex lock;
-	const DWORD error = GetLastError();
-	if (error == 0)
-		return;
-	auto timestamp = get_current_timestamp();
-	string message_text = GetLastErrorText(error);
-	const DWORD process_id = GetCurrentProcessId();
-	_tprintf(_T("%s [FATAL] [process %d] 予期しないエラーです。 理由: %s(%d)\n"), timestamp.c_str(), process_id, message_text.c_str(), error);
-	fflush(stdout);
-}
-
-string get_current_timestamp()
-{
-	SYSTEMTIME s;
-	GetLocalTime(&s);
-	_TCHAR buffer[99] = _T("");
-	wsprintf(buffer, _T("%04d-%02d-%02d %02d:%02d:%02d.%03d"),
-		s.wYear, s.wMonth, s.wDay, s.wHour, s.wMinute, s.wSecond, s.wMilliseconds);
-	return buffer;
-}
-
-void _trace(const _TCHAR* message) {
+void log_trace(const _TCHAR* message) {
 
 	// ※※※ ロギングの排他ロック ※※※
 	mymutex lock;
+
+	// SetLastError(0);
 	const DWORD process_id = GetCurrentProcessId();
 	_tprintf(_T("%s [TRACE] [process %d] %s\n"), get_current_timestamp().c_str(), process_id, message);
 	fflush(stdout);
+	report_error();
 }
 
-void _trace(const std::wstring& message) {
+void log_trace(const std::wstring& message) {
 
-	_trace(message.c_str());
+	log_trace(message.c_str());
 }
 
-void _trace(const std::wstringstream& message) {
+void log_trace(const std::wstringstream& message) {
 
-	_trace(message.str());
+	log_trace(message.str());
 }
 
-DWORD getExitCodeOfProcess(const HANDLE& handle) {
+void log_error(const _TCHAR* message) {
+
+	// ※※※ ロギングの排他ロック ※※※
+	mymutex lock;
+	const DWORD process_id = GetCurrentProcessId();
+	_tprintf(_T("%s [ERROR] [process %d] %s\n"), get_current_timestamp().c_str(), process_id, message);
+	fflush(stdout);
+}
+
+void log_error(const std::wstring& message) {
+
+	log_error(message.c_str());
+}
+
+void log_error(const std::wstringstream& message) {
+
+	log_error(message.str());
+}
+
+DWORD get_exitcode_of_process(const HANDLE& handle) {
+
 	DWORD exitCode = 0;
 	GetExitCodeProcess(handle, &exitCode);
 	return exitCode;
