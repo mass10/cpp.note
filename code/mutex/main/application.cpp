@@ -2,6 +2,10 @@
 #include "myprocess.h"
 #include "..\common\framework.h"
 
+application::application() {
+
+}
+
 void application::run() {
 
 	log_trace(_T("### 開始 ###"));
@@ -15,4 +19,8 @@ void application::run() {
 	}
 
 	log_trace(_T("--- 終了 ---"));
+}
+
+application::~application() {
+
 }
