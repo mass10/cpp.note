@@ -35,7 +35,6 @@ void process::join()
 			report_error();
 		}
 		{
-			// SetLastError(0);
 			const auto result = WaitForSingleObject(this->process_info.hProcess, INFINITE);
 			report_error();
 
@@ -45,7 +44,6 @@ void process::join()
 			log_trace(line);
 		}
 
-		SetLastError(0);
 		CloseHandle(this->process_info.hProcess);
 		report_error();
 
@@ -54,7 +52,6 @@ void process::join()
 
 	if (this->process_info.hThread != NULL)
 	{
-		SetLastError(0);
 		CloseHandle(this->process_info.hThread);
 		report_error();
 

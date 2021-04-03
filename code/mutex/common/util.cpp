@@ -94,7 +94,6 @@ void report_error() {
 	if (error == 0)
 		return;
 
-	auto timestamp = get_current_timestamp();
 	string message_text = get_last_error_text(error);
 	stringstream line;
 	line << _T("予期しないエラーです。理由: ") << message_text.c_str() << _T(" (") << error << _T(")");
@@ -117,11 +116,9 @@ void log_trace(const _TCHAR* message) {
 	// ※※※ ロギングの排他ロック ※※※
 	mymutex lock;
 
-	// SetLastError(0);
 	const DWORD process_id = GetCurrentProcessId();
 	_tprintf(_T("%s [TRACE] [process %d] %s\n"), get_current_timestamp().c_str(), process_id, message);
 	fflush(stdout);
-	report_error();
 }
 
 void log_trace(const std::wstring& message) {
@@ -138,6 +135,7 @@ void log_error(const _TCHAR* message) {
 
 	// ※※※ ロギングの排他ロック ※※※
 	mymutex lock;
+
 	const DWORD process_id = GetCurrentProcessId();
 	_tprintf(_T("%s [ERROR] [process %d] %s\n"), get_current_timestamp().c_str(), process_id, message);
 	fflush(stdout);
