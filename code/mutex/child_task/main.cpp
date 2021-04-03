@@ -1,8 +1,10 @@
 ﻿// UTF-8 with BOM
 
 #include <Windows.h>
-#include <random>
+#include <tchar.h>
+#include <crtdbg.h>
 #include <iostream>
+#include <locale.h>
 #include "..\common\util.h"
 #include "..\common\mutex.h"
 
@@ -86,7 +88,10 @@ application::~application() {
 
 ///////////////////////////////////////////////////////////////////////////////
 // アプリケーションのエントリーポイント
-int main() {
+int _tmain(int argc, _TCHAR* argv[]) {
+
+	UNREFERENCED_PARAMETER(argc);
+	UNREFERENCED_PARAMETER(argv);
 
 	// メモリ診断
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
