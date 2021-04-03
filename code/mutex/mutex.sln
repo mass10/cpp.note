@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "main", "mutex\mutex.vcxproj", "{1F6A9F39-CF04-48AE-A5C2-1CD87BBDD66B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "main", "main\main.vcxproj", "{1F6A9F39-CF04-48AE-A5C2-1CD87BBDD66B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "common", "common\common.vcxproj", "{0800ED7A-6772-4C5A-8E93-2ACCB78CBACF}"
 EndProject

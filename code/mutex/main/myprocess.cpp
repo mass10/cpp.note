@@ -18,7 +18,7 @@ process::process(const _TCHAR* path)
 	}
 
 	{
-		std::wstringstream line;
+		stringstream line;
 		line << _T("プロセスを起動しました。(pid: ") << this->process_info.dwProcessId << _T(")");
 		log_trace(line);
 	}
@@ -29,7 +29,7 @@ void process::join()
 	if (this->process_info.hProcess != NULL)
 	{
 		{
-			std::wstringstream line;
+			stringstream line;
 			line << _T("プロセス終了を待機しています... (pid: ") << this->process_info.dwProcessId << _T(")");
 			log_trace(line);
 			report_error();
@@ -39,7 +39,7 @@ void process::join()
 			report_error();
 
 			const DWORD exitCode = get_exitcode_of_process(this->process_info.hProcess);
-			std::wstringstream line;
+			stringstream line;
 			line << _T("プロセスはコード ") << exitCode << _T(" で終了しました。");
 			log_trace(line);
 		}

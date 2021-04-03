@@ -128,12 +128,12 @@ void log_trace(const _TCHAR* message) {
 	fflush(stdout);
 }
 
-void log_trace(const std::wstring& message) {
+void log_trace(const string& message) {
 
 	log_trace(message.c_str());
 }
 
-void log_trace(const std::wstringstream& message) {
+void log_trace(const stringstream& message) {
 
 	log_trace(message.str());
 }
@@ -148,12 +148,12 @@ void log_error(const _TCHAR* message) {
 	fflush(stdout);
 }
 
-void log_error(const std::wstring& message) {
+void log_error(const string& message) {
 
 	log_error(message.c_str());
 }
 
-void log_error(const std::wstringstream& message) {
+void log_error(const stringstream& message) {
 
 	log_error(message.str());
 }

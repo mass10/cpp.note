@@ -22,7 +22,7 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{1f6a9f39-cf04-48ae-a5c2-1cd87bbdd66b}</ProjectGuid>
-    <RootNamespace>mutex</RootNamespace>
+    <RootNamespace>main</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>main</ProjectName>
   </PropertyGroup>
@@ -147,7 +147,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="myprocess.h" />
-    <ClInclude Include="string.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\common\common.vcxproj">
