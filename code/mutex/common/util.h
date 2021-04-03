@@ -8,7 +8,10 @@
 #include <sstream>
 #include "string.h"
 
+// 最後に発生した Win32 エラーの文字列表現を返します。
 string get_last_error_text();
+// 最後に発生した Win32 エラーの文字列表現を返します。
+// @params `error` GetLastError() の戻り値
 string get_last_error_text(DWORD error);
 string get_date_string0();
 string get_current_timestamp();
@@ -42,4 +45,6 @@ void report_error();
 void rtrim(wchar_t* s);
 void rtrim(char* s);
 
+// プロセスの終了ステータスを返します。
+// @param `handle` プロセスのハンドル
 DWORD get_exitcode_of_process(const HANDLE& handle);
