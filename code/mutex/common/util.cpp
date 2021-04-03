@@ -111,13 +111,20 @@ string get_current_timestamp() {
 	return buffer;
 }
 
+string format_pid() {
+	_TCHAR buffer[99];
+	const DWORD process_id = GetCurrentProcessId();
+	_stprintf_s(buffer, sizeof(buffer) / sizeof(_TCHAR), _T("0x%08X"), process_id);
+	return buffer;
+}
+
 void log_trace(const _TCHAR* message) {
 
 	// ※※※ ロギングの排他ロック ※※※
 	mymutex lock;
 
-	const DWORD process_id = GetCurrentProcessId();
-	_tprintf(_T("%s [TRACE] [process %d] %s\n"), get_current_timestamp().c_str(), process_id, message);
+	const auto process_id = format_pid();
+	_tprintf(_T("%s [TRACE] [process %s] %s\n"), get_current_timestamp().c_str(), process_id.c_str(), message);
 	fflush(stdout);
 }
 
@@ -136,8 +143,8 @@ void log_error(const _TCHAR* message) {
 	// ※※※ ロギングの排他ロック ※※※
 	mymutex lock;
 
-	const DWORD process_id = GetCurrentProcessId();
-	_tprintf(_T("%s [ERROR] [process %d] %s\n"), get_current_timestamp().c_str(), process_id, message);
+	const auto process_id = format_pid();
+	_tprintf(_T("%s [ERROR] [process %s] %s\n"), get_current_timestamp().c_str(), process_id.c_str(), message);
 	fflush(stdout);
 }
 

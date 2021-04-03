@@ -35,7 +35,7 @@ public:
 	~application();
 	void run();
 private:
-	void speak(const _TCHAR* message);
+	void speak(const _TCHAR* message) const;
 	const string _face;
 };
 
@@ -45,17 +45,14 @@ application::application() :
 
 }
 
-void application::speak(const _TCHAR* message) {
+void application::speak(const _TCHAR* message) const {
 
 	log_trace(this->_face + _T(" ") + message);
 }
 
 void application::run() {
 
-	std::random_device generator;
-	const unsigned int task_id = generator();
-
-	this->speak(_T("入店～"));
+	this->speak(_T(" 入店～"));
 
 	const unsigned long long start_tick = GetTickCount64();
 
@@ -64,11 +61,12 @@ void application::run() {
 		// 経過時間
 		const unsigned long long current_tick = GetTickCount64();
 		const unsigned long long elapsed_tick = current_tick - start_tick;
+
 		if (600 * 3 <= elapsed_tick) {
 			break;
 		}
 
-		// ※※※ 連続した操作の排他ロック ※※※
+		// ※※※ 自分の歌まで待機 ※※※
 		mymutex lock;
 
 		this->speak(_T("★わたしの歌ーーーーー！"));
