@@ -28,19 +28,34 @@ string choose_face_aa() {
 
 ///////////////////////////////////////////////////////////////////////////////
 // アプリケーション本体
+
 class application {
 public:
+	application();
+	~application();
 	void run();
+private:
+	void speak(const _TCHAR* message);
+	const string _face;
 };
+
+application::application() :
+	_face(choose_face_aa())
+{
+
+}
+
+void application::speak(const _TCHAR* message) {
+
+	log_trace(this->_face + _T(" ") + message);
+}
 
 void application::run() {
 
 	std::random_device generator;
 	const unsigned int task_id = generator();
 
-	auto face_aa = choose_face_aa();
-
-	log_trace(face_aa + _T(" 入店～"));
+	this->speak(_T("入店～"));
 
 	const unsigned long long start_tick = GetTickCount64();
 
@@ -53,17 +68,22 @@ void application::run() {
 			break;
 		}
 
-		// ※※※ 連続した走査の排他ロック ※※※
+		// ※※※ 連続した操作の排他ロック ※※※
 		mymutex lock;
-		log_trace(face_aa + _T(" ★わたしの歌ーーーーー！"));
-		log_trace(face_aa + _T(" アアア～♪ <1番"));
+
+		this->speak(_T("★わたしの歌ーーーーー！"));
+		this->speak(_T("アアア～♪ <1番"));
 		Sleep(200);
-		log_trace(face_aa + _T(" アアア～♪ <2番"));
+		this->speak(_T("アアア～♪ <2番"));
 		Sleep(200);
-		log_trace(face_aa + _T(" つかれた..."));
+		this->speak(_T("つかれた..."));
 	}
 
-	log_trace(face_aa + _T(" 退出..."));
+	this->speak(_T("退出..."));
+}
+
+application::~application() {
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////
