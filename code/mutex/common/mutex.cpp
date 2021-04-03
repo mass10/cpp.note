@@ -5,24 +5,23 @@
 
 HANDLE create_mutex(const _TCHAR* mutex_name) {
 
-	//SECURITY_DESCRIPTOR sd;
-	//InitializeSecurityDescriptor(&sd, SECURITY_DESCRIPTOR_REVISION);
-	//SetSecurityDescriptorDacl(&sd, TRUE, 0, FALSE);
+	HANDLE handle = CreateMutex(
+		NULL /* security attributes */,
+		FALSE /* not as initial owner */,
+		mutex_name /* its name */);
 
-	//SECURITY_ATTRIBUTES secAttribute;
-	//secAttribute.nLength = sizeof(secAttribute);
-	//secAttribute.lpSecurityDescriptor = &sd;
-	//secAttribute.bInheritHandle = TRUE;
-
-	HANDLE handle = CreateMutex(NULL, FALSE, mutex_name);
 	const DWORD error = GetLastError();
-	if (handle == NULL)
-	{
-		const string message = GetLastErrorText(error);
+	if (handle == NULL) {
+		const string message = get_last_error_text(error);
 		_tprintf(_T("[FATAL] CreateMutex failed. reason: %s (%d)\n"), message.c_str(), error);
 		fflush(stdout);
 		exit(0);
 	}
+
+	if (error == ERROR_ALREADY_EXISTS)
+		// success
+		SetLastError(0);
+
 	return handle;
 }
 
