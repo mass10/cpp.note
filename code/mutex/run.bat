@@ -1,2 +1,2 @@
 @SETLOCAL
-@CALL mutex.exe
+@CALL main.exe
