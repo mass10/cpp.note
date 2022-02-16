@@ -1,3 +1,7 @@
+//
+// 標準出力に色を付けるアプリケーションの例です。
+//
+
 #include <stdio.h>
 #include <Windows.h>
 
